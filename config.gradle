@@ -1,0 +1,71 @@
+ext{
+
+    android = [
+            compileSdkVersion : 25,
+            buildToolsVersion : "25.0.2",
+            minSdkVersion : 19,
+            targetSdkVersion : 25,
+            versionCode  : 10001,
+            versionName  : "1.0.1",
+            supportVersion : "25.3.0",
+    ]
+
+    dependencies = [
+            ////// ====== System ====== ///////
+            "support-v4": "com.android.support:support-v4:$android.supportVersion",
+            "appcompat-v7": "com.android.support:appcompat-v7:$android.supportVersion",
+            "design": "com.android.support:design:$android.supportVersion",
+            "recyclerview-v7": "com.android.support:recyclerview-v7:$android.supportVersion",
+            ////// ======= framework ====== //////
+            // RxJava
+            "rxjava": 'io.reactivex:rxjava:1.1.6',
+            "rxandroid": 'io.reactivex:rxandroid:1.2.1',
+            //RxLifecycle管理Rx的生命周期
+            "rxlifecycle": 'com.trello:rxlifecycle:0.6.1',
+            "rxlifecycle-components":'com.trello:rxlifecycle-components:0.6.1',
+            "rxlifecycle-kotlin":'com.trello:rxlifecycle-kotlin:0.6.1',
+
+            //retrofit网络
+            "retrofit":'com.squareup.retrofit2:retrofit:2.1.0',
+            "retrofit-converter-gson":'com.squareup.retrofit2:converter-gson:2.0.2',
+            "retrofit-adapter-rxjava": 'com.squareup.retrofit2:adapter-rxjava:2.0.2',
+
+            //图片加载
+            "glide": 'com.github.bumptech.glide:glide:3.7.0',
+            "picasso": 'com.squareup.picasso:picasso:2.5.2',
+            "fresco": 'com.facebook.fresco:fresco:0.12.0',
+
+            //Gson解析
+            "gson": 'com.google.code.gson:gson:2.2.4',
+            //动画兼容
+            "nineoldandroids": 'com.nineoldandroids:library:2.4.0',
+
+            ////// ====== library ====== //////
+
+            // GIF 图片显示
+            // https://github.com/koral--/android-gif-drawable
+            "android-gif-drawable":'pl.droidsonroids.gif:android-gif-drawable:1.2.6',
+            // https://github.com/CymChad/BaseRecyclerViewAdapterHelper
+            "cymRecyclerViewAdapter": 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.13',
+            //图片选择
+            //https://github.com/donglua/PhotoPicker
+            "PhotoPicker":'me.iwf.photopicker:PhotoPicker:0.8.11@aar',
+            //图片剪切
+            //https://github.com/Yalantis/uCrop
+            "ucrop": 'com.yalantis:ucrop:2.2.0',
+            // 选择器
+            // https://github.com/AigeStudio/WheelPicker
+            "WheelPicker": 'cn.aigestudio.wheelpicker:WheelPicker:1.1.2',
+            ////// ====== 第三方SDK ====== ////////
+            // 并发性注解
+            "jcip-annotations": 'net.jcip:jcip-annotations:1.0',
+            //蒲公英
+            // maven { url "https://raw.githubusercontent.com/Pgyer/mvn_repo_pgyer/master" }
+            "pgyersdk": 'com.pgyersdk:sdk:2.5.6',
+            //友盟+
+            "umeng-analytics": 'com.umeng.analytics:analytics:latest.integration',
+            // GrowingIO 统计
+            "growingio": 'com.growingio.android:vds-android-agent:0.9.104@aar',
+    ]
+
+}
