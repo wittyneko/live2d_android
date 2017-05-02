@@ -4,7 +4,7 @@
  *
  *  (c) Live2D Inc. All rights reserved.
  */
-package jp.live2d.app;
+package cn.wittyneko.live2d.app;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -13,9 +13,9 @@ import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
 import jp.live2d.framework.L2DViewMatrix;
-import jp.live2d.utils.android.FileManager;
-import jp.live2d.utils.android.OffscreenImage;
-import jp.live2d.utils.android.SimpleImage;
+import cn.wittyneko.live2d.utils.FileManager;
+import cn.wittyneko.live2d.utils.OffscreenImage;
+import cn.wittyneko.live2d.utils.SimpleImage;
 import android.opengl.GLSurfaceView;
 
 

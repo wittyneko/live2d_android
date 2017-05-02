@@ -5,7 +5,7 @@
  *
  *  (c) Live2D Inc. All rights reserved.
  */
-package jp.live2d.utils.android;
+package cn.wittyneko.live2d.utils;
 
 import java.io.IOException;
 import java.io.InputStream;

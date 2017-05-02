@@ -5,7 +5,7 @@
  *
  *  (c) Live2D Inc. All rights reserved.
  */
-package jp.live2d.app;
+package cn.wittyneko.live2d.app;
 
 
 public class LAppDefine

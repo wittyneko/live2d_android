@@ -5,14 +5,13 @@
  * (c) Live2D Inc. All rights reserved.
  */
 
-package jp.live2d.app;
+package cn.wittyneko.live2d.app;
 
-import jp.live2d.utils.android.FileManager;
-import jp.live2d.utils.android.SoundManager;
+import cn.wittyneko.live2d.utils.FileManager;
+import cn.wittyneko.live2d.utils.SoundManager;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;

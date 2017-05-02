@@ -5,13 +5,13 @@
  *
  *  (c) Live2D Inc. All rights reserved.
  */
-package jp.live2d.app;
+package cn.wittyneko.live2d.app;
 
 import jp.live2d.framework.L2DMatrix44;
 import jp.live2d.framework.L2DTargetPoint;
 import jp.live2d.framework.L2DViewMatrix;
-import jp.live2d.utils.android.AccelHelper;
-import jp.live2d.utils.android.TouchManager;
+import cn.wittyneko.live2d.utils.AccelHelper;
+import cn.wittyneko.live2d.utils.TouchManager;
 import android.app.Activity;
 import android.content.Context;
 import android.opengl.GLSurfaceView;

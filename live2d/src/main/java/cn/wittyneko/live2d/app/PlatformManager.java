@@ -4,7 +4,7 @@
  *
  *  (c) Live2D Inc. All rights reserved.
  */
-package jp.live2d.app;
+package cn.wittyneko.live2d.app;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -16,8 +16,8 @@ import android.util.Log;
 import jp.live2d.ALive2DModel;
 import jp.live2d.android.Live2DModelAndroid;
 import jp.live2d.framework.IPlatformManager;
-import jp.live2d.utils.android.FileManager;
-import jp.live2d.utils.android.LoadUtil;
+import cn.wittyneko.live2d.utils.FileManager;
+import cn.wittyneko.live2d.utils.LoadUtil;
 
 public class PlatformManager implements IPlatformManager {
 	static public final String 	TAG = "Live2D App";

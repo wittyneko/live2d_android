@@ -5,7 +5,7 @@
  *
  *  (c) Live2D Inc. All rights reserved.
  */
-package jp.live2d.utils.android;
+package cn.wittyneko.live2d.utils;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -13,7 +13,7 @@ import java.io.InputStream;
 import javax.microedition.khronos.opengles.GL10;
 import javax.microedition.khronos.opengles.GL11;
 
-import jp.live2d.app.LAppDefine;
+import cn.wittyneko.live2d.app.LAppDefine;
 import jp.live2d.util.UtDebug;
 
 import android.content.res.AssetFileDescriptor;

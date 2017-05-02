@@ -4,7 +4,7 @@
  *
  *  (c) Live2D Inc. All rights reserved.
  */
-package jp.live2d.app;
+package cn.wittyneko.live2d.app;
 
 import java.util.ArrayList;
 
@@ -106,6 +106,7 @@ public class LAppLive2DManager
 			} catch (Exception e) {
 				
 				Log.e(TAG,"Failed to load."+e.getStackTrace());
+				// release cache
 			}
 		}
 	}

@@ -5,7 +5,7 @@
  *
  *  (c) Live2D Inc. All rights reserved.
  */
-package jp.live2d.app;
+package cn.wittyneko.live2d.app;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -21,12 +21,12 @@ import jp.live2d.framework.L2DStandardID;
 import jp.live2d.framework.Live2DFramework;
 import jp.live2d.motion.AMotion;
 import jp.live2d.util.UtSystem;
-import jp.live2d.utils.android.BufferUtil;
-import jp.live2d.utils.android.FileManager;
-import jp.live2d.utils.android.ModelSetting;
-import jp.live2d.utils.android.ModelSettingJson;
-import jp.live2d.utils.android.OffscreenImage;
-import jp.live2d.utils.android.SoundManager;
+import cn.wittyneko.live2d.utils.BufferUtil;
+import cn.wittyneko.live2d.utils.FileManager;
+import cn.wittyneko.live2d.utils.ModelSetting;
+import cn.wittyneko.live2d.utils.ModelSettingJson;
+import cn.wittyneko.live2d.utils.OffscreenImage;
+import cn.wittyneko.live2d.utils.SoundManager;
 import android.util.Log;
 
 
