@@ -12,7 +12,8 @@ import java.util.Map;
 import jp.live2d.ALive2DModel;
 import jp.live2d.Live2D;
 import jp.live2d.motion.AMotion;
-import jp.live2d.motion.Live2DMotion;
+import jp.live2d.motion.L2DExpressionMotion;
+import jp.live2d.motion.L2DMotion;
 import jp.live2d.motion.MotionQueueManager;
 
 /**
@@ -173,11 +174,11 @@ public class L2DBaseModel {
         if (debugMode) pm.log("Load Motion : " + path);
 
 
-        Live2DMotion motion = null;
+        L2DMotion motion = null;
 
 
         byte[] buf = pm.loadBytes(path);
-        motion = Live2DMotion.loadMotion(buf);
+        motion = L2DMotion.loadMotion(buf);
 
         if (name != null) {
             motions.put(name, motion);

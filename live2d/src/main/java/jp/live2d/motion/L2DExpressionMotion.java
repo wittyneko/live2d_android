@@ -4,7 +4,7 @@
  * <p>
  * (c) Live2D Inc. All rights reserved.
  */
-package jp.live2d.framework;
+package jp.live2d.motion;
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -12,7 +12,6 @@ import java.util.HashMap;
 import java.util.Set;
 
 import jp.live2d.ALive2DModel;
-import jp.live2d.motion.AMotion;
 import jp.live2d.motion.MotionQueueManager.MotionQueueEnt;
 import jp.live2d.util.Json;
 import jp.live2d.util.Json.Value;
