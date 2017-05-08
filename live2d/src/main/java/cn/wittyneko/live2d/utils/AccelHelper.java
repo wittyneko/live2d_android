@@ -17,7 +17,9 @@ import android.os.Build;
 import android.view.Display;
 import android.view.Surface;
 
-
+/**
+ * 加速度
+ */
 public class AccelHelper {
 
 	private static float acceleration_x = 0 ;

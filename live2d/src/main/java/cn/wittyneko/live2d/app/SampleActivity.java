@@ -22,7 +22,9 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
-
+/**
+ * 使用示例
+ */
 public class SampleActivity extends Activity {
 
     private LAppLive2DManager live2DMgr;

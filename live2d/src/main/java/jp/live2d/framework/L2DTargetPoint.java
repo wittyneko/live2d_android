@@ -1,116 +1,105 @@
 /**
- *
- *  You can modify and use this source freely
- *  only for the development of application related Live2D.
- *
- *  (c) Live2D Inc. All rights reserved.
+ * You can modify and use this source freely
+ * only for the development of application related Live2D.
+ * <p>
+ * (c) Live2D Inc. All rights reserved.
  */
 package jp.live2d.framework;
 
-import jp.live2d.util.UtSystem ;
+import jp.live2d.util.UtSystem;
 
 public class L2DTargetPoint {
-	static public final int FRAME_RATE=30;
+    static public final int FRAME_RATE = 30;
 
-	private float faceTargetX = 0 ;
-	private float faceTargetY = 0 ;
+    private float faceTargetX = 0;
+    private float faceTargetY = 0;
 
-	private float faceX = 0 ;
-	private float faceY = 0 ;
+    private float faceX = 0;
+    private float faceY = 0;
 
-	private float faceVX = 0 ;
-	private float faceVY = 0 ;
+    private float faceVX = 0;
+    private float faceVY = 0;
 
-	private long lastTimeSec = 0 ;
-
-
-	public void set( float x , float y  )
-	{
-		faceTargetX = x ;
-		faceTargetY = y ;
-	}
+    private long lastTimeSec = 0;
 
 
-	
-	public float getX()
-	{
-		return faceX;
-	}
+    public void set(float x, float y) {
+        faceTargetX = x;
+        faceTargetY = y;
+    }
 
 
-	
-	public float getY()
-	{
-		return faceY;
-	}
+    public float getX() {
+        return faceX;
+    }
 
 
-	
-	public void update()
-	{
-		
-		final float TIME_TO_MAX_SPEED = 0.15f ;
-		final float FACE_PARAM_MAX_V = 40.0f / 7.5f ;
+    public float getY() {
+        return faceY;
+    }
 
-		final float MAX_V =  FACE_PARAM_MAX_V / FRAME_RATE ;
 
-		if( lastTimeSec == 0 )
-		{
-			lastTimeSec = UtSystem.getUserTimeMSec() ;
-			return ;
-		}
+    public void update() {
 
-		long curTimeSec = UtSystem.getUserTimeMSec() ;
+        final float TIME_TO_MAX_SPEED = 0.15f;
+        final float FACE_PARAM_MAX_V = 40.0f / 7.5f;
 
-		float deltaTimeWeight = (float)(curTimeSec - lastTimeSec)*FRAME_RATE/1000.0f ;
-		lastTimeSec = curTimeSec ;
+        final float MAX_V = FACE_PARAM_MAX_V / FRAME_RATE;
 
-		final float FRAME_TO_MAX_SPEED = TIME_TO_MAX_SPEED * FRAME_RATE  ;//sec*frame/sec
-		final float MAX_A = deltaTimeWeight * MAX_V / FRAME_TO_MAX_SPEED ;
+        if (lastTimeSec == 0) {
+            lastTimeSec = UtSystem.getUserTimeMSec();
+            return;
+        }
 
-		float dx = (faceTargetX - faceX) ;
-		float dy = (faceTargetY - faceY) ;
+        long curTimeSec = UtSystem.getUserTimeMSec();
 
-		if( dx == 0 && dy == 0 ) return ;
-		float d = (float) Math.sqrt( dx*dx + dy*dy ) ;
+        float deltaTimeWeight = (float) (curTimeSec - lastTimeSec) * FRAME_RATE / 1000.0f;
+        lastTimeSec = curTimeSec;
 
-		float vx = MAX_V * dx / d ;
-		float vy = MAX_V * dy / d ;
+        final float FRAME_TO_MAX_SPEED = TIME_TO_MAX_SPEED * FRAME_RATE;//sec*frame/sec
+        final float MAX_A = deltaTimeWeight * MAX_V / FRAME_TO_MAX_SPEED;
 
-		float ax = vx - faceVX ;
-		float ay = vy - faceVY ;
+        float dx = (faceTargetX - faceX);
+        float dy = (faceTargetY - faceY);
 
-		float a = (float) Math.sqrt( ax*ax + ay*ay ) ;
+        if (dx == 0 && dy == 0) return;
+        float d = (float) Math.sqrt(dx * dx + dy * dy);
 
-		if( a < -MAX_A || a > MAX_A )
-		{
-			ax *= MAX_A / a ;
-			ay *= MAX_A / a ;
-			a = MAX_A ;
-		}
+        float vx = MAX_V * dx / d;
+        float vy = MAX_V * dy / d;
 
-		faceVX += ax ;
-		faceVY += ay ;
+        float ax = vx - faceVX;
+        float ay = vy - faceVY;
 
-		{
-			//            2  6           2               3
-			//      sqrt(a  t  + 16 a h t  - 8 a h) - a t
-			// v = --------------------------------------
-			//                    2
-			//                 4 t  - 2
-			//(t=1)
+        float a = (float) Math.sqrt(ax * ax + ay * ay);
 
-			float max_v = 0.5f * ( (float)Math.sqrt( MAX_A*MAX_A + 16*MAX_A * d - 8*MAX_A * d ) - MAX_A ) ;
-			float cur_v = (float) Math.sqrt( faceVX*faceVX + faceVY*faceVY ) ;
+        if (a < -MAX_A || a > MAX_A) {
+            ax *= MAX_A / a;
+            ay *= MAX_A / a;
+            a = MAX_A;
+        }
 
-			if( cur_v > max_v )
-			{
-				faceVX *= max_v / cur_v ;
-				faceVY *= max_v / cur_v ;
-			}
-		}
+        faceVX += ax;
+        faceVY += ay;
 
-		faceX += faceVX ;
-		faceY += faceVY ;
-	}
+        {
+            //            2  6           2               3
+            //      sqrt(a  t  + 16 a h t  - 8 a h) - a t
+            // v = --------------------------------------
+            //                    2
+            //                 4 t  - 2
+            //(t=1)
+
+            float max_v = 0.5f * ((float) Math.sqrt(MAX_A * MAX_A + 16 * MAX_A * d - 8 * MAX_A * d) - MAX_A);
+            float cur_v = (float) Math.sqrt(faceVX * faceVX + faceVY * faceVY);
+
+            if (cur_v > max_v) {
+                faceVX *= max_v / cur_v;
+                faceVY *= max_v / cur_v;
+            }
+        }
+
+        faceX += faceVX;
+        faceY += faceVY;
+    }
 }

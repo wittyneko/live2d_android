@@ -1,8 +1,8 @@
 /**
- *  You can modify and use this source freely
- *  only for the development of application related Live2D.
- *
- *  (c) Live2D Inc. All rights reserved.
+ * You can modify and use this source freely
+ * only for the development of application related Live2D.
+ * <p>
+ * (c) Live2D Inc. All rights reserved.
  */
 package cn.wittyneko.live2d.app;
 
@@ -19,75 +19,70 @@ import jp.live2d.framework.IPlatformManager;
 import cn.wittyneko.live2d.utils.FileManager;
 import cn.wittyneko.live2d.utils.LoadUtil;
 
+/**
+ * 文件加载方式实现
+ */
 public class PlatformManager implements IPlatformManager {
-	static public final String 	TAG = "Live2D App";
+    static public final String TAG = "Live2D App";
 
-	private GL10 gl;
-	public byte[] loadBytes(String path) {
-		byte[] ret = null;
-		try
-		{
-			InputStream in = FileManager.open(path);
-			ret=new byte[in.available()];
-			in.read(ret, 0, ret.length);
+    private GL10 gl;
 
-			in.close() ;
-		}
-		catch (IOException e)
-		{
-			e.printStackTrace();
-		}
+    public byte[] loadBytes(String path) {
+        byte[] ret = null;
+        try {
+            InputStream in = FileManager.open(path);
+            ret = new byte[in.available()];
+            in.read(ret, 0, ret.length);
 
-		return ret;
-	}
+            in.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-	public String loadString(String path) {
-		String ret = null;
-		try
-		{
-			InputStream in = FileManager.open(path);
-			ret = in.toString();
-			in.close() ;
-		}
-		catch (IOException e)
-		{
-			e.printStackTrace();
-		}
+        return ret;
+    }
 
-		return ret;
-	}
+    public String loadString(String path) {
+        String ret = null;
+        try {
+            InputStream in = FileManager.open(path);
+            ret = in.toString();
+            in.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-	public void loadTexture(ALive2DModel model, int no, String path) {
-		try
-		{
-			InputStream in = FileManager.open(path) ;
+        return ret;
+    }
 
-			boolean mipmap = true;
-			
-			
-			int glTexNo = LoadUtil.loadTexture(gl, in, mipmap);
-			((Live2DModelAndroid) model).setTexture(no, glTexNo);
+    public void loadTexture(ALive2DModel model, int no, String path) {
+        try {
+            InputStream in = FileManager.open(path);
 
-			in.close();
-		}
-		catch (IOException e)
-		{
-			e.printStackTrace();
-		}
-	}
+            boolean mipmap = true;
 
-	public void log(String txt) {
-		Log.i(TAG, txt);
-	}
 
-	public void setGL(GL10 gl) {
-		this.gl = gl;
-	}
+            int glTexNo = LoadUtil.loadTexture(gl, in, mipmap);
+            ((Live2DModelAndroid) model).setTexture(no, glTexNo);
 
-	public ALive2DModel loadLive2DModel(String path) {
-		ALive2DModel model=Live2DModelAndroid.loadModel(loadBytes(path));
-		return model;
-	}
+            in.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void log(String txt) {
+        Log.i(TAG, txt);
+    }
+
+    public void setGL(GL10 gl) {
+        this.gl = gl;
+    }
+
+    public ALive2DModel loadLive2DModel(String path) {
+        ALive2DModel model = Live2DModelAndroid.loadModel(loadBytes(path));
+        return model;
+    }
 
 
 }

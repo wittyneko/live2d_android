@@ -1,8 +1,8 @@
 /**
- *  You can modify and use this source freely
- *  only for the development of application related Live2D.
- *
- *  (c) Live2D Inc. All rights reserved.
+ * You can modify and use this source freely
+ * only for the development of application related Live2D.
+ * <p>
+ * (c) Live2D Inc. All rights reserved.
  */
 package cn.wittyneko.live2d.utils;
 
@@ -15,62 +15,62 @@ import java.io.InputStream;
 import android.content.Context;
 import android.content.res.AssetFileDescriptor;
 
+/**
+ * 文件加载管理
+ */
 public class FileManager {
-	static Context context ;
+    static Context context;
 
 
-	public static void init( Context c ){
-		context = c ;
-	}
+    public static void init(Context c) {
+        context = c;
+    }
 
 
-	public static boolean exists_resource( String path ){
-		try {
-			InputStream afd = context.getAssets().open(path) ;
-			afd.close() ;
-			return true ;
-		} catch (IOException e) {
-			return false ;
-		}
-	}
+    public static boolean exists_resource(String path) {
+        try {
+            InputStream afd = context.getAssets().open(path);
+            afd.close();
+            return true;
+        } catch (IOException e) {
+            return false;
+        }
+    }
 
 
-	public static InputStream open_resource( String path ) throws IOException{
-		return context.getAssets().open(path) ;
-	}
+    public static InputStream open_resource(String path) throws IOException {
+        return context.getAssets().open(path);
+    }
 
 
-	public static boolean exists_cache( String path ){
-		File f = new File( context.getCacheDir() , path ) ;
-		return f.exists() ;
-	}
+    public static boolean exists_cache(String path) {
+        File f = new File(context.getCacheDir(), path);
+        return f.exists();
+    }
 
 
-	public static InputStream open_cache( String path ) throws FileNotFoundException{
-		File f = new File( context.getCacheDir() , path ) ;
-		return new FileInputStream(f) ;
-	}
+    public static InputStream open_cache(String path) throws FileNotFoundException {
+        File f = new File(context.getCacheDir(), path);
+        return new FileInputStream(f);
+    }
 
 
-	
-	public static InputStream open( String path , boolean isCache ) throws IOException{
-		if( isCache ){
-			return open_cache(path) ;
-		}
-		else{
-			return open_resource(path) ;
-		}
+    public static InputStream open(String path, boolean isCache) throws IOException {
+        if (isCache) {
+            return open_cache(path);
+        } else {
+            return open_resource(path);
+        }
 
-	}
+    }
 
 
-	public static InputStream open( String path  ) throws IOException{
-		return open(path,false);
-	}
+    public static InputStream open(String path) throws IOException {
+        return open(path, false);
+    }
 
 
-	public static AssetFileDescriptor openFd( String path ) throws IOException
-	{
-		return context.getAssets().openFd(path);
-	}
+    public static AssetFileDescriptor openFd(String path) throws IOException {
+        return context.getAssets().openFd(path);
+    }
 }

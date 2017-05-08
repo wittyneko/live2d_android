@@ -1,9 +1,8 @@
 /**
- *
- *  You can modify and use this source freely
- *  only for the development of application related Live2D.
- *
- *  (c) Live2D Inc. All rights reserved.
+ * You can modify and use this source freely
+ * only for the development of application related Live2D.
+ * <p>
+ * (c) Live2D Inc. All rights reserved.
  */
 package cn.wittyneko.live2d.utils;
 
@@ -24,167 +23,143 @@ import android.media.MediaPlayer;
 import android.opengl.GLUtils;
 import android.util.Log;
 
+/**
+ * 模型文件加载工具
+ */
 public class LoadUtil {
 
-	static final int GEN_TEX_LOOP = 999 ;
+    static final int GEN_TEX_LOOP = 999;
 
-	public static int loadTexture(GL10 gl, InputStream in , boolean mipmap ) throws IOException
-	{
-		Bitmap bitmap = BitmapFactory.decodeStream( in );
-		int texture ;
+    public static int loadTexture(GL10 gl, InputStream in, boolean mipmap) throws IOException {
+        Bitmap bitmap = BitmapFactory.decodeStream(in);
+        int texture;
 
-		if( mipmap )
-		{
-			texture = buildMipmap(gl, bitmap) ;
-		}
-		else
-		{
-			texture = genTexture(gl) ;
-	        gl.glBindTexture(GL10.GL_TEXTURE_2D, texture) ;
+        if (mipmap) {
+            texture = buildMipmap(gl, bitmap);
+        } else {
+            texture = genTexture(gl);
+            gl.glBindTexture(GL10.GL_TEXTURE_2D, texture);
 
-	        gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MIN_FILTER,GL10.GL_LINEAR);
-	        gl.glTexParameterf(GL10.GL_TEXTURE_2D,GL10.GL_TEXTURE_MAG_FILTER,GL10.GL_LINEAR);
-	        gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_WRAP_S,GL10.GL_CLAMP_TO_EDGE);
-	        gl.glTexParameterf(GL10.GL_TEXTURE_2D,GL10.GL_TEXTURE_WRAP_T,GL10.GL_CLAMP_TO_EDGE);
-	        gl.glTexEnvf(GL10.GL_TEXTURE_ENV,GL10.GL_TEXTURE_ENV_MODE,GL10.GL_MODULATE);
+            gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MIN_FILTER, GL10.GL_LINEAR);
+            gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MAG_FILTER, GL10.GL_LINEAR);
+            gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_WRAP_S, GL10.GL_CLAMP_TO_EDGE);
+            gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_WRAP_T, GL10.GL_CLAMP_TO_EDGE);
+            gl.glTexEnvf(GL10.GL_TEXTURE_ENV, GL10.GL_TEXTURE_ENV_MODE, GL10.GL_MODULATE);
 
-			GLUtils.texImage2D(GL10.GL_TEXTURE_2D, 0, bitmap, 0) ;
-			bitmap.recycle();
-		}
+            GLUtils.texImage2D(GL10.GL_TEXTURE_2D, 0, bitmap, 0);
+            bitmap.recycle();
+        }
 
-		return texture;
-	}
+        return texture;
+    }
 
 
-	
-	public static int genTexture(GL10 gl)
-	{
-		int texture = 0 ;
-		int i = 0 ;
+    public static int genTexture(GL10 gl) {
+        int texture = 0;
+        int i = 0;
 
-		for( ; i< GEN_TEX_LOOP ; i++ )
-		{
-			int [] ret = {0} ;
-			gl.glGenTextures(1, ret  , 0 );
-			texture = ret[0] ;
+        for (; i < GEN_TEX_LOOP; i++) {
+            int[] ret = {0};
+            gl.glGenTextures(1, ret, 0);
+            texture = ret[0];
 
-			if( texture < 0 )
-			{
-				gl.glDeleteTextures(1, ret, 0) ;
-			}
-			else
-			{
-				break ;
-			}
-		}
-		if( i == GEN_TEX_LOOP )
-		{
-			UtDebug.error( "gen texture loops over " + GEN_TEX_LOOP + "times @UtOpenGL" ) ;
-			texture = 0 ;
-		}
+            if (texture < 0) {
+                gl.glDeleteTextures(1, ret, 0);
+            } else {
+                break;
+            }
+        }
+        if (i == GEN_TEX_LOOP) {
+            UtDebug.error("gen texture loops over " + GEN_TEX_LOOP + "times @UtOpenGL");
+            texture = 0;
+        }
 
-		return texture ;
-	}
+        return texture;
+    }
 
 
-	public static int buildMipmap(GL10 gl, Bitmap bitmap)
-	{
-		return buildMipmap( gl, bitmap , true ) ;
-	}
+    public static int buildMipmap(GL10 gl, Bitmap bitmap) {
+        return buildMipmap(gl, bitmap, true);
+    }
 
 
-	/**
-	 * Mipmap texture
-	 *
-	 */
-	public static int buildMipmap(GL10 gl, Bitmap srcBitmap , boolean recycle )
-	{
-		Bitmap bitmap = srcBitmap ;
-		int level = 0;
-		int height = bitmap.getHeight();
-		int width = bitmap.getWidth();
-		int textureID = genTexture(gl);
+    /**
+     * Mipmap texture
+     */
+    public static int buildMipmap(GL10 gl, Bitmap srcBitmap, boolean recycle) {
+        Bitmap bitmap = srcBitmap;
+        int level = 0;
+        int height = bitmap.getHeight();
+        int width = bitmap.getWidth();
+        int textureID = genTexture(gl);
 
-		gl.glBindTexture(GL10.GL_TEXTURE_2D, textureID);
+        gl.glBindTexture(GL10.GL_TEXTURE_2D, textureID);
 
-		try
-		{
-			
-			((GL11)gl).glTexParameteri(GL10.GL_TEXTURE_2D, GL11.GL_GENERATE_MIPMAP, GL10.GL_TRUE);
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
+        try {
 
-        gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MIN_FILTER,GL10.GL_LINEAR);
+            ((GL11) gl).glTexParameteri(GL10.GL_TEXTURE_2D, GL11.GL_GENERATE_MIPMAP, GL10.GL_TRUE);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MIN_FILTER, GL10.GL_LINEAR);
         gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MIN_FILTER, GL10.GL_LINEAR_MIPMAP_LINEAR);
 
         gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MAG_FILTER, GL10.GL_LINEAR);
-        gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_WRAP_S,GL10.GL_CLAMP_TO_EDGE);
-        gl.glTexParameterf(GL10.GL_TEXTURE_2D,GL10.GL_TEXTURE_WRAP_T,GL10.GL_CLAMP_TO_EDGE);
-        gl.glTexEnvf(GL10.GL_TEXTURE_ENV,GL10.GL_TEXTURE_ENV_MODE,GL10.GL_MODULATE);
+        gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_WRAP_S, GL10.GL_CLAMP_TO_EDGE);
+        gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_WRAP_T, GL10.GL_CLAMP_TO_EDGE);
+        gl.glTexEnvf(GL10.GL_TEXTURE_ENV, GL10.GL_TEXTURE_ENV_MODE, GL10.GL_MODULATE);
 
-		while (height >= 1 && width >= 1)
-		{
-			//---- note ----
-			// First of all, generate the texture from our bitmap and set it to
-			// the according level
-			
-			GLUtils.texImage2D(GL10.GL_TEXTURE_2D, level, bitmap, 0);
+        while (height >= 1 && width >= 1) {
+            //---- note ----
+            // First of all, generate the texture from our bitmap and set it to
+            // the according level
 
-			if (height == 1 || width == 1)
-			{
-				if( recycle || bitmap != srcBitmap ) bitmap.recycle() ;
-				break;
-			}
+            GLUtils.texImage2D(GL10.GL_TEXTURE_2D, level, bitmap, 0);
 
-			level++;
+            if (height == 1 || width == 1) {
+                if (recycle || bitmap != srcBitmap) bitmap.recycle();
+                break;
+            }
 
-			height /= 2;
-			width /= 2;
+            level++;
 
-			Bitmap bitmap2 = Bitmap.createScaledBitmap(bitmap, width, height, true );
+            height /= 2;
+            width /= 2;
 
-			// Clean up
-			if( recycle || bitmap != srcBitmap ) bitmap.recycle();
-			bitmap = bitmap2;
-		}
+            Bitmap bitmap2 = Bitmap.createScaledBitmap(bitmap, width, height, true);
 
-		return textureID;
-	}
+            // Clean up
+            if (recycle || bitmap != srcBitmap) bitmap.recycle();
+            bitmap = bitmap2;
+        }
+
+        return textureID;
+    }
 
 
-	
-	static public MediaPlayer loadAssetsSound(String filename)
-	{
-		if(LAppDefine.DEBUG_LOG)Log.d("", "Load sound : "+filename);
+    static public MediaPlayer loadAssetsSound(String filename) {
+        if (LAppDefine.DEBUG_LOG) Log.d("", "Load sound : " + filename);
 
-		final MediaPlayer player = new MediaPlayer() ;
+        final MediaPlayer player = new MediaPlayer();
 
-		try
-		{
-			final AssetFileDescriptor assetFileDescritorArticle = FileManager.openFd( filename );
-			player.reset();
+        try {
+            final AssetFileDescriptor assetFileDescritorArticle = FileManager.openFd(filename);
+            player.reset();
 
-			player.setDataSource( assetFileDescritorArticle.getFileDescriptor(),
-					assetFileDescritorArticle.getStartOffset(), assetFileDescritorArticle.getLength() );
-			player.setAudioStreamType(AudioManager.STREAM_MUSIC);
-			assetFileDescritorArticle.close();
+            player.setDataSource(assetFileDescritorArticle.getFileDescriptor(),
+                    assetFileDescritorArticle.getStartOffset(), assetFileDescritorArticle.getLength());
+            player.setAudioStreamType(AudioManager.STREAM_MUSIC);
+            assetFileDescritorArticle.close();
 
-		}
-		catch (IllegalArgumentException e)
-		{
-			e.printStackTrace();
-		}
-		catch (IOException e)
-		{
-			e.printStackTrace();
-		}
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-		return player;
-	}
-
+        return player;
+    }
 
 
 }
