@@ -31,6 +31,8 @@ public class LAppDefine {
     //================================================//
 
 
+    public static final String SOURCES_DIR = "sources";
+
     public static final String BACK_IMAGE_NAME = "image/back_class_normal.png";
 
 
@@ -57,8 +59,6 @@ public class LAppDefine {
 
     static final String HIT_AREA_HEAD = "head";
     static final String HIT_AREA_BODY = "body";
-    static final String MOTION_GROUP_TAP_BODY = "tap_body";
-    static final String MOTION_GROUP_FLICK_HEAD = "flick_head";
 
     //===============================================//
 

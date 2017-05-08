@@ -39,7 +39,7 @@ public class SampleActivity extends Activity {
 
         FileManager.init(getApplicationContext());
         SoundManager.init(this);
-        live2DMgr = new LAppLive2DManager();
+        //live2DMgr = new LAppLive2DManager();
         setupGUI();
     }
 

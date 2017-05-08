@@ -27,6 +27,8 @@ public class LAppView extends GLSurfaceView {
 
     static public final String TAG = "LAppView";
 
+    private boolean onTouchEnable = true; // 可触摸
+    private boolean moveEnable = false; // 可移动缩放
 
     private LAppRenderer renderer;
 
@@ -87,6 +89,11 @@ public class LAppView extends GLSurfaceView {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+
+        if (!onTouchEnable){
+            return super.onTouchEvent(event);
+        }
+
         boolean ret = false;
         int touchNum;
         switch (event.getAction()) {
@@ -111,11 +118,13 @@ public class LAppView extends GLSurfaceView {
             case MotionEvent.ACTION_MOVE:
 
                 touchNum = event.getPointerCount();
-
+                //单手指
                 if (touchNum == 1) {
                     touchesMoved(event.getX(), event.getY());
-                } else if (touchNum == 2) {
-                    touchesMoved(event.getX(0), event.getY(0), event.getX(1), event.getY(1));
+                }
+                //双手指事件
+                else if (touchNum == 2) {
+                    touchesMoved(event.getX(0),event.getY(0),event.getX(1),event.getY(1));
                 } else {
 
                 }
@@ -241,6 +250,7 @@ public class LAppView extends GLSurfaceView {
     }
 
 
+    //单指 滑动
     public void touchesMoved(float p1x, float p1y) {
         if (LAppDefine.DEBUG_TOUCH_LOG) Log.v(TAG, "touchesMoved" + "x:" + p1x + " y:" + p1y);
         touchMgr.touchesMoved(p1x, p1y);
@@ -264,8 +274,10 @@ public class LAppView extends GLSurfaceView {
         }
     }
 
-
+    //多指 滑动
     public void touchesMoved(float p1x, float p1y, float p2x, float p2y) {
+        if (!moveEnable)
+            return;
         if (LAppDefine.DEBUG_TOUCH_LOG)
             Log.v(TAG, "touchesMoved" + " x1:" + p1x + " y1:" + p1y + " x2:" + p2x + " y2:" + p2y);
         touchMgr.touchesMoved(p1x, p1y, p2x, p2y);
@@ -299,8 +311,26 @@ public class LAppView extends GLSurfaceView {
         return viewMatrix;
     }
 
+    public boolean isOnTouchEnable() {
+        return onTouchEnable;
+    }
 
+    public void setOnTouchEnable(boolean onTouchEnable) {
+        this.onTouchEnable = onTouchEnable;
+    }
+
+    public boolean isMoveEnable() {
+        return moveEnable;
+    }
+
+    public void setMoveEnable(boolean moveEnable) {
+        this.moveEnable = moveEnable;
+    }
+
+    // 手势判断
     private final SimpleOnGestureListener simpleOnGestureListener = new SimpleOnGestureListener() {
+
+        // 双击
         @Override
         public boolean onDoubleTap(MotionEvent event) {
             return super.onDoubleTap(event);
@@ -312,6 +342,7 @@ public class LAppView extends GLSurfaceView {
             return true;
         }
 
+        // 单击
         @Override
         public boolean onSingleTapConfirmed(MotionEvent event) {
             float x = transformDeviceToViewX(touchMgr.getX());
@@ -321,9 +352,22 @@ public class LAppView extends GLSurfaceView {
             return ret;
         }
 
+        // 单击释放
         @Override
         public boolean onSingleTapUp(MotionEvent event) {
             return super.onSingleTapUp(event);
+        }
+
+        // 长按
+        @Override
+        public void onLongPress(MotionEvent e) {
+
+            //Log.e("onLongPress", "-> " + touchMgr.getX() + ", " + touchMgr.getY());
+            float x = transformDeviceToViewX(touchMgr.getX());
+            float y = transformDeviceToViewY(touchMgr.getY());
+            //Log.e("onLongPress", "-> " + x + ", " + y);
+            delegate.longPress(x, y);
+            super.onLongPress(e);
         }
     };
 

@@ -141,7 +141,7 @@ public class LAppRenderer implements GLSurfaceView.Renderer {
         accelY = y;
     }
 
-
+    //绘制背景
     private void setupBackground(GL10 context) {
         try {
             InputStream in = FileManager.open(LAppDefine.BACK_IMAGE_NAME);
