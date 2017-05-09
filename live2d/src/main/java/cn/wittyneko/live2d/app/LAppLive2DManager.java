@@ -10,6 +10,7 @@ import java.util.ArrayList;
 
 import javax.microedition.khronos.opengles.GL10;
 
+import cn.wittyneko.live2d.app.data.ModelPath;
 import cn.wittyneko.live2d.utils.FileManager;
 import cn.wittyneko.live2d.utils.SoundManager;
 import jp.live2d.Live2D;
@@ -20,6 +21,7 @@ import jp.live2d.motion.MotionQueueManager;
 
 import android.app.Activity;
 import android.content.Context;
+import android.text.TextUtils;
 import android.util.Log;
 
 /**
@@ -32,11 +34,10 @@ public abstract class LAppLive2DManager {
 
     protected LAppView view;
 
-    protected ArrayList<LAppModel> models; //模型列表
+    protected ArrayList<ModelPath> mPaths; //模型路径列表
+    protected ArrayList<LAppModel> models; //当前列表模型数量
 
-    protected int modelCount = -1;
     protected boolean reloadFlg;
-
 
 
     public LAppLive2DManager(Context context) {
@@ -46,6 +47,7 @@ public abstract class LAppLive2DManager {
         SoundManager.init(mContext);
         Live2DFramework.setPlatformManager(new PlatformManager());
 
+        mPaths = new ArrayList<>();
         models = new ArrayList<>();
     }
 
@@ -53,12 +55,26 @@ public abstract class LAppLive2DManager {
     //=================模型加载===================
     //===========================================
 
-    // 获取加载的模型列表
+    // 获取模型路径列表
+    public ArrayList<ModelPath> getPaths() {
+        return mPaths;
+    }
+
+    // 添加模型路径
+    public void addPath(String path) {
+        if (mPaths.isEmpty()) {
+            mPaths.add(new ModelPath());
+        }
+        ModelPath modelPath = mPaths.get(0);
+        modelPath.getPath().add(path);
+    }
+
+    // 获取当前加载的全部模型
     public ArrayList<LAppModel> getModels() {
         return models;
     }
 
-    // 获取加载的模型实例
+    // 获取当前加载的第N个模型实例
     public LAppModel getModel(int no) {
         if (no >= models.size()) return null;
         return models.get(no);
@@ -71,12 +87,27 @@ public abstract class LAppLive2DManager {
 
     //更换模型
     public void changeModel() {
+        for (int i = 0; i < mPaths.size(); i++) {
+            ModelPath path = mPaths.get(i);
+            path.setIndex(path.getIndex() + 1);
+        }
         reloadFlg = true;
-        modelCount++;
+    }
+
+    public void changeModel(int no) {
+        if (!mPaths.isEmpty() && no < mPaths.size()) {
+            ModelPath path = mPaths.get(no);
+            path.setIndex(path.getIndex() + 1);
+        }
+        reloadFlg = true;
     }
 
     //释放模型
     public void releaseModel() {
+//        for (int i = 0; i < mPaths.size(); i++) {
+//            mPaths.get(i).setIndex(-1);
+//        }
+
         for (int i = 0; i < models.size(); i++) {
             models.get(i).release();
         }
@@ -97,8 +128,30 @@ public abstract class LAppLive2DManager {
             reloadFlg = false;
 
             try {
-                loadModels(gl);
-            }catch (Throwable e){
+                releaseModel();
+                // 模型列表存在
+                if (!mPaths.isEmpty()) {
+                    for (ModelPath path : mPaths) {
+                        int index = path.getIndex();
+                        ArrayList<String> pathList = path.getPath();
+                        // 当前模型存在一个以上路径
+                        if (pathList != null && !pathList.isEmpty()) {
+                            if (index >= pathList.size()) {
+                                index = index % pathList.size();
+                                path.setIndex(index);
+                            }
+                            String pathStr = null;
+                            if (index != -1) {
+                                 pathStr = pathList.get(index);
+                            }
+
+                            if (!TextUtils.isEmpty(pathStr)) {
+                                loadModels(gl, pathStr);
+                            }
+                        }
+                    }
+                }
+            } catch (Throwable e) {
                 Log.e(TAG, "Failed to load." + e.getStackTrace());
                 release();
             }
@@ -106,7 +159,7 @@ public abstract class LAppLive2DManager {
     }
 
     // 加载模型
-    public abstract void loadModels(GL10 gl) throws Throwable;
+    public abstract void loadModels(GL10 gl, String path) throws Throwable;
 
     //===========================================
     //=================绘制显示===================
@@ -134,7 +187,7 @@ public abstract class LAppLive2DManager {
         return view;
     }
 
-    public LAppView getView(){
+    public LAppView getView() {
         return view;
     }
 

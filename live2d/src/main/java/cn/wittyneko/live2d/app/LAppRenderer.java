@@ -38,9 +38,9 @@ public class LAppRenderer implements GLSurfaceView.Renderer {
 
 
     @Override
-    public void onSurfaceCreated(GL10 context, EGLConfig arg1) {
+    public void onSurfaceCreated(GL10 gl, EGLConfig arg1) {
 
-        setupBackground(context);
+        setupBackground(gl);
     }
 
 
@@ -79,7 +79,7 @@ public class LAppRenderer implements GLSurfaceView.Renderer {
 
         gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 
-
+        // 加载模型
         delegate.update(gl);
 
 
@@ -110,6 +110,7 @@ public class LAppRenderer implements GLSurfaceView.Renderer {
             gl.glMultMatrixf(viewMatrix.getArray(), 0);
 
 
+            // 绘制背景
             if (bg != null) {
                 gl.glPushMatrix();
                 {
@@ -122,6 +123,7 @@ public class LAppRenderer implements GLSurfaceView.Renderer {
                 gl.glPopMatrix();
             }
 
+            // 绘制模型
             for (int i = 0; i < delegate.getModelNum(); i++) {
                 LAppModel model = delegate.getModel(i);
                 if (model.isInitialized() && !model.isUpdating()) {
@@ -142,10 +144,10 @@ public class LAppRenderer implements GLSurfaceView.Renderer {
     }
 
     //绘制背景
-    private void setupBackground(GL10 context) {
+    private void setupBackground(GL10 gl) {
         try {
             InputStream in = FileManager.open(LAppDefine.BACK_IMAGE_NAME);
-            bg = new SimpleImage(context, in);
+            bg = new SimpleImage(gl, in);
 
             bg.setDrawRect(
                     LAppDefine.VIEW_LOGICAL_MAX_LEFT,

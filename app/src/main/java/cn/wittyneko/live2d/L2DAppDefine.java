@@ -35,21 +35,4 @@ public class L2DAppDefine extends LAppDefine {
     // 状态
     public static final String STATE_DEFAULT = "default"; //默认状态
 
-
-    //===============================================//
-
-    //闲置动作和表情
-    public static final String MOTION_IDLE = "[{\"motion\":{\"index\":4},\"expression\":{\"index\":0}}]";
-    // 声音开
-    public static final String MOTION_SOUND_ON = "[" +
-            "{\"motion\":{\"index\":1}," +
-            "\"expression\":{\"index\":1}," +
-            "\"dialog\":[{\"content\":\"哼，我都不想说话了。\",\"delay\":2,\"audio\":\"sound_on/body-led-skirt-tap-01.mp3\",\"type\":0,\"name\":\"PPD\"}]}" +
-            "]";
-    // 声音关
-    public static final String MOTION_SOUND_OFF = "[{" +
-            "\"motion\":{\"index\":1}," +
-            "\"expression\":{\"index\":1}," +
-            "\"dialog\":[{\"content\":\"那好吧，我不出声就是了。。\",\"delay\":2,\"type\":0,\"name\":\"PPD\"}]}" +
-            "]";
 }
