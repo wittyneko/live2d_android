@@ -27,7 +27,7 @@ public class FileManager {
     }
 
 
-    public static boolean exists_resource(String path) {
+    public static boolean existsAssets(String path) {
         try {
             InputStream afd = context.getAssets().open(path);
             afd.close();
@@ -38,28 +38,44 @@ public class FileManager {
     }
 
 
-    public static InputStream open_resource(String path) throws IOException {
+    public static InputStream openAssets(String path) throws IOException {
         return context.getAssets().open(path);
     }
 
+    public static AssetFileDescriptor openAssetsFD(String path) throws IOException {
+        return context.getAssets().openFd(path);
+    }
 
-    public static boolean exists_cache(String path) {
-        File f = new File(context.getCacheDir(), path);
+
+    public static boolean existsCache(String path) {
+        File f = new File(context.getExternalCacheDir(), path);
         return f.exists();
     }
 
 
-    public static InputStream open_cache(String path) throws FileNotFoundException {
-        File f = new File(context.getCacheDir(), path);
+    public static InputStream openCache(String path) throws FileNotFoundException {
+        File f = new File(context.getExternalCacheDir(), path);
         return new FileInputStream(f);
     }
 
 
-    public static InputStream open(String path, boolean isCache) throws IOException {
-        if (isCache) {
-            return open_cache(path);
+    public static boolean existsFile(String path) {
+        File f = new File(context.getExternalFilesDir(null), path);
+        return f.exists();
+    }
+
+
+    public static InputStream openFile(String path) throws FileNotFoundException {
+        File f = new File(context.getExternalFilesDir(null), path);
+        return new FileInputStream(f);
+    }
+
+
+    public static InputStream open(String path, boolean isAssets) throws IOException {
+        if (isAssets) {
+            return openAssets(path);
         } else {
-            return open_resource(path);
+            return openFile(path);
         }
 
     }
@@ -67,10 +83,5 @@ public class FileManager {
 
     public static InputStream open(String path) throws IOException {
         return open(path, false);
-    }
-
-
-    public static AssetFileDescriptor openFd(String path) throws IOException {
-        return context.getAssets().openFd(path);
     }
 }

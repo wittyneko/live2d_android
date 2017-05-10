@@ -144,7 +144,7 @@ public class LoadUtil {
         final MediaPlayer player = new MediaPlayer();
 
         try {
-            final AssetFileDescriptor assetFileDescritorArticle = FileManager.openFd(filename);
+            final AssetFileDescriptor assetFileDescritorArticle = FileManager.openAssetsFD(filename);
             player.reset();
 
             player.setDataSource(assetFileDescritorArticle.getFileDescriptor(),
