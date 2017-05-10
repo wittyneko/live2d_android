@@ -32,7 +32,7 @@ import android.util.Log;
  */
 public abstract class LAppLive2DManager {
 
-    static public final String TAG = "SampleLive2DManager";
+    static public final String TAG = "LAppLive2DManager";
     protected Context mContext;
 
     protected LAppView view;
@@ -45,6 +45,7 @@ public abstract class LAppLive2DManager {
 
     protected boolean reloadFlg;
     protected boolean reloadBg;
+    protected boolean firstLoad =  true;
 
 
     public LAppLive2DManager(Context context) {
@@ -201,7 +202,7 @@ public abstract class LAppLive2DManager {
         }
 
         // 加载模型
-        if (reloadFlg) {
+        if (!firstLoad && reloadFlg) {
 
             reloadFlg = false;
 
@@ -234,6 +235,7 @@ public abstract class LAppLive2DManager {
                 release();
             }
         }
+        firstLoad = false;
     }
 
     // 加载模型
@@ -289,6 +291,10 @@ public abstract class LAppLive2DManager {
             view.onPause();
         }
         //SoundManager.release();
+    }
+
+    public void onDestroy() {
+        SoundManager.release();
     }
 
 
