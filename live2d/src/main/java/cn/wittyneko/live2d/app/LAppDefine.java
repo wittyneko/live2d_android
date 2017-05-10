@@ -28,13 +28,6 @@ public class LAppDefine {
     public static final float VIEW_LOGICAL_MAX_BOTTOM = -2;
     public static final float VIEW_LOGICAL_MAX_TOP = 2;
 
-    //================================================//
-
-
-    public static final String SOURCES_DIR = "sources";
-
-    public static final String BACK_IMAGE_NAME = "image/back_img.png";
-
     //===================================================//
 
     // 动作组 key
@@ -47,7 +40,7 @@ public class LAppDefine {
     // 事件
     public static final String EVENT_TAP = "tap_"; // 点击
     public static final String EVENT_FLICK = "drag_"; //滑动
-    public static final String EVENT_LONG_PRESS = "longpress_"; //滑动
+    public static final String EVENT_LONG_PRESS = "longpress_"; //长按
 
 
     static final String HIT_AREA_HEAD = "head";

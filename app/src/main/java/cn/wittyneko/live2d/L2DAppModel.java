@@ -78,7 +78,7 @@ public class L2DAppModel extends LAppModel {
     // 闲置动作
     @Override
     public void startIdleRandomMotion() {
-        startRandomMotion(L2DAppDefine.MOTION_GROUP_IDLE, L2DAppDefine.PRIORITY_IDLE);
+        startRandomMotion(LAppDefine.MOTION_GROUP_IDLE, LAppDefine.PRIORITY_IDLE);
     }
 
     @Override

@@ -5,13 +5,17 @@
  * (c) Live2D Inc. All rights reserved.
  */
 
-package cn.wittyneko.live2d.app;
+package cn.wittyneko.live2dsample;
 
+import cn.wittyneko.live2d.L2DAppDefine;
+import cn.wittyneko.live2d.L2DAppManager;
+import cn.wittyneko.live2d.app.LAppLive2DManager;
+import cn.wittyneko.live2d.app.LAppView;
 import cn.wittyneko.live2d.utils.FileManager;
 import cn.wittyneko.live2d.utils.SoundManager;
 
-import android.app.Activity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -25,9 +29,9 @@ import android.widget.Toast;
 /**
  * 使用示例
  */
-public class SampleActivity extends Activity {
+public class SampleActivity extends AppCompatActivity {
 
-    private LAppLive2DManager live2DMgr;
+    private LAppLive2DManager live2dMgr;
 
 
     @Override
@@ -39,27 +43,26 @@ public class SampleActivity extends Activity {
 
         FileManager.init(getApplicationContext());
         SoundManager.init(this);
-        //live2DMgr = new LAppLive2DManager();
         setupGUI();
     }
 
 
     @Override
     protected void onResume() {
-        live2DMgr.onResume();
+        live2dMgr.onResume();
         super.onResume();
     }
 
 
     @Override
     protected void onPause() {
-        live2DMgr.onPause();
+        live2dMgr.onPause();
         super.onPause();
     }
 
     @Override
     protected void onDestroy() {
-        SoundManager.release();
+        live2dMgr.onDestroy();
         super.onDestroy();
     }
 
@@ -68,8 +71,11 @@ public class SampleActivity extends Activity {
         FrameLayout rootView = new FrameLayout(this);
         setContentView(rootView, new ViewGroup.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
 
+        live2dMgr = new L2DAppManager(this);
+        live2dMgr.addBgPath(L2DAppDefine.BACK_IMAGE_NAME); // 添加背景
+        live2dMgr.addModelPath(L2DAppDefine.MODEL_YANXI); // 添加模型
 
-        LAppView live2dView = live2DMgr.createView(this);
+        LAppView live2dView = live2dMgr.createView(this);
         rootView.addView(live2dView, 0, new ViewGroup.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
 
 
@@ -79,7 +85,7 @@ public class SampleActivity extends Activity {
             @Override
             public void onClick(View v) {
                 Toast.makeText(getApplicationContext(), "change model", Toast.LENGTH_SHORT).show();
-                live2DMgr.changeModel();//Live2D Event
+                live2dMgr.changeModel();//Live2D Event
             }
         });
         FrameLayout.LayoutParams btnChangeLayoutParams = new FrameLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);

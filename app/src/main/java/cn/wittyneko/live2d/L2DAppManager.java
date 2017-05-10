@@ -4,6 +4,8 @@ import android.content.Context;
 import android.text.TextUtils;
 import android.util.Log;
 
+import java.text.SimpleDateFormat;
+
 import javax.microedition.khronos.opengles.GL10;
 
 import cn.wittyneko.live2d.app.LAppDefine;
@@ -18,8 +20,15 @@ import cn.wittyneko.live2d.app.LAppModel;
 public class L2DAppManager extends LAppLive2DManager {
     private L2DAppModel.UpdateListener mUpdateListener; //界面刷新监听
 
+    SimpleDateFormat mFormat =new SimpleDateFormat("yyyy年MM月dd日 HH时mm分ss秒SSS毫秒");
     public L2DAppManager(Context context) {
         super(context);
+    }
+
+    @Override
+    public void update(GL10 gl) {
+        //Log.e("load update",  "-> " + mFormat.format(System.currentTimeMillis()) + ", " + System.currentTimeMillis());
+        super.update(gl);
     }
 
     // 加载模型
@@ -27,7 +36,9 @@ public class L2DAppManager extends LAppLive2DManager {
     public void loadModels(GL10 gl, String path) throws Throwable {
 
         L2DAppModel appModel = new L2DAppModel();
+        Log.e("load begin",  "-> " + mFormat.format(System.currentTimeMillis()) + ", " + System.currentTimeMillis());
         appModel.load(gl, path);
+        Log.e("load end",  "-> " + mFormat.format(System.currentTimeMillis()) + ", " + System.currentTimeMillis());
         appModel.feedIn();
         appModel.setUpdateListener(mUpdateListener);
         models.add(appModel);

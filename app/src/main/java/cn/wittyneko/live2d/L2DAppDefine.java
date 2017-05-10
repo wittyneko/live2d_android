@@ -13,7 +13,8 @@ public class L2DAppDefine extends LAppDefine {
 
     //模型 文件配置
     public static final String MODEL_YANXI = "live2d/yanxi1/model.model.json"; // 2.0
-
+    public static final String BACK_IMAGE_NAME = "image/bg_img.jpg";
+    public static final String SOURCES_DIR = "sources";
 
     //===================================================//
 
