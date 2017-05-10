@@ -40,7 +40,7 @@ public class LAppRenderer implements GLSurfaceView.Renderer {
     @Override
     public void onSurfaceCreated(GL10 gl, EGLConfig arg1) {
 
-        setupBackground(gl);
+        //setupBackground(gl);
     }
 
 
@@ -111,14 +111,14 @@ public class LAppRenderer implements GLSurfaceView.Renderer {
 
 
             // 绘制背景
-            if (bg != null) {
+            if (delegate.getBg() != null) {
                 gl.glPushMatrix();
                 {
                     float SCALE_X = 0.25f;
                     float SCALE_Y = 0.1f;
                     gl.glTranslatef(-SCALE_X * accelX, SCALE_Y * accelY, 0);
 
-                    bg.draw(gl);
+                    delegate.getBg().draw(gl);
                 }
                 gl.glPopMatrix();
             }
@@ -143,22 +143,22 @@ public class LAppRenderer implements GLSurfaceView.Renderer {
         accelY = y;
     }
 
-    //绘制背景
-    private void setupBackground(GL10 gl) {
-        try {
-            InputStream in = FileManager.open(LAppDefine.BACK_IMAGE_NAME);
-            bg = new SimpleImage(gl, in);
-
-            bg.setDrawRect(
-                    LAppDefine.VIEW_LOGICAL_MAX_LEFT,
-                    LAppDefine.VIEW_LOGICAL_MAX_RIGHT,
-                    LAppDefine.VIEW_LOGICAL_MAX_BOTTOM,
-                    LAppDefine.VIEW_LOGICAL_MAX_TOP);
-
-
-            bg.setUVRect(0.0f, 1.0f, 0.0f, 1.0f);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+    //初始化背景
+//    private void setupBackground(GL10 gl) {
+//        try {
+//            InputStream in = FileManager.open(LAppDefine.BACK_IMAGE_NAME);
+//            bg = new SimpleImage(gl, in);
+//
+//            bg.setDrawRect(
+//                    LAppDefine.VIEW_LOGICAL_MAX_LEFT,
+//                    LAppDefine.VIEW_LOGICAL_MAX_RIGHT,
+//                    LAppDefine.VIEW_LOGICAL_MAX_BOTTOM,
+//                    LAppDefine.VIEW_LOGICAL_MAX_TOP);
+//
+//
+//            bg.setUVRect(0.0f, 1.0f, 0.0f, 1.0f);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//    }
 }

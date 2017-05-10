@@ -6,12 +6,15 @@
  */
 package cn.wittyneko.live2d.app;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 
 import javax.microedition.khronos.opengles.GL10;
 
 import cn.wittyneko.live2d.app.data.ModelPath;
 import cn.wittyneko.live2d.utils.FileManager;
+import cn.wittyneko.live2d.utils.SimpleImage;
 import cn.wittyneko.live2d.utils.SoundManager;
 import jp.live2d.Live2D;
 import jp.live2d.framework.L2DMotionManager;
@@ -37,7 +40,11 @@ public abstract class LAppLive2DManager {
     protected ArrayList<ModelPath> mPaths; //模型路径列表
     protected ArrayList<LAppModel> models; //当前列表模型数量
 
+    protected ModelPath mBgPaths; // 背景路径列表
+    protected SimpleImage mBg; // 背景图片
+
     protected boolean reloadFlg;
+    protected boolean reloadBg;
 
 
     public LAppLive2DManager(Context context) {
@@ -49,6 +56,7 @@ public abstract class LAppLive2DManager {
 
         mPaths = new ArrayList<>();
         models = new ArrayList<>();
+        mBgPaths = new ModelPath();
     }
 
     //===========================================
@@ -56,12 +64,12 @@ public abstract class LAppLive2DManager {
     //===========================================
 
     // 获取模型路径列表
-    public ArrayList<ModelPath> getPaths() {
+    public ArrayList<ModelPath> getModelPaths() {
         return mPaths;
     }
 
     // 添加模型路径
-    public void addPath(String path) {
+    public void addModelPath(String path) {
         if (mPaths.isEmpty()) {
             mPaths.add(new ModelPath());
         }
@@ -85,7 +93,7 @@ public abstract class LAppLive2DManager {
         return models.size();
     }
 
-    //更换模型
+    //切换模型
     public void changeModel() {
         for (int i = 0; i < mPaths.size(); i++) {
             ModelPath path = mPaths.get(i);
@@ -94,6 +102,7 @@ public abstract class LAppLive2DManager {
         reloadFlg = true;
     }
 
+    // 切换第N个模型
     public void changeModel(int no) {
         if (!mPaths.isEmpty() && no < mPaths.size()) {
             ModelPath path = mPaths.get(no);
@@ -115,6 +124,68 @@ public abstract class LAppLive2DManager {
         models.clear();
     }
 
+    // 获取全部背景路径
+    public ModelPath getBgPaths() {
+        return mBgPaths;
+    }
+
+    // 添加背景路径
+    public void addBgPath(String path) {
+        mBgPaths.getPath().add(path);
+    }
+
+    // 获取背景
+    public SimpleImage getBg() {
+        return mBg;
+    }
+
+    // 初始化背景
+    private void setupBackground(GL10 gl) {
+
+        int index = mBgPaths.getIndex();
+        ArrayList<String> pathList = mBgPaths.getPath();
+
+        if (index == -1)
+            return;
+
+        if (pathList != null && !pathList.isEmpty()) {
+            if (index >= pathList.size()) {
+                index = index % pathList.size();
+                mBgPaths.setIndex(index);
+            }
+            String pathStr = pathList.get(index);
+
+            if (TextUtils.isEmpty(pathStr)) {
+                return;
+            }
+        } else {
+            return;
+        }
+
+        try {
+
+            InputStream in = FileManager.open(pathList.get(index));
+            mBg = new SimpleImage(gl, in);
+
+            mBg.setDrawRect(
+                    LAppDefine.VIEW_LOGICAL_MAX_LEFT,
+                    LAppDefine.VIEW_LOGICAL_MAX_RIGHT,
+                    LAppDefine.VIEW_LOGICAL_MAX_BOTTOM,
+                    LAppDefine.VIEW_LOGICAL_MAX_TOP);
+
+
+            mBg.setUVRect(0.0f, 1.0f, 0.0f, 1.0f);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // 切换背景
+    public void changeBg() {
+        mBgPaths.setIndex(mBgPaths.getIndex() + 1);
+        reloadBg = true;
+    }
+
     // 释放内存
     public void release() {
         SoundManager.release();
@@ -123,6 +194,13 @@ public abstract class LAppLive2DManager {
     //刷新并加载模型
     public void update(GL10 gl) {
         view.update();
+        // 加载背景
+        if (reloadBg) {
+            reloadBg = false;
+            setupBackground(gl);
+        }
+
+        // 加载模型
         if (reloadFlg) {
 
             reloadFlg = false;
@@ -220,6 +298,9 @@ public abstract class LAppLive2DManager {
 
         if (getModelNum() == 0) {
             changeModel();
+        }
+        if (getBg() == null) {
+            changeBg();
         }
     }
 
