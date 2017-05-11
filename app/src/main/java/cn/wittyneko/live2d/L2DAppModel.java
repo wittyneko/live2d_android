@@ -3,6 +3,9 @@ package cn.wittyneko.live2d;
 import android.util.Log;
 import android.view.animation.AnimationUtils;
 
+import java.util.Iterator;
+import java.util.concurrent.ConcurrentHashMap;
+
 import javax.microedition.khronos.opengles.GL10;
 
 import cn.wittyneko.live2d.app.LAppDefine;
@@ -24,6 +27,9 @@ public class L2DAppModel extends LAppModel {
     private String[] mouthArray;
     private int mouthIndex;
     private long mouthStartTime;
+
+    // 调整参数
+    public ConcurrentHashMap<String, Float> customParam = new ConcurrentHashMap<>();
 
     @Override
     public void load(GL10 gl, String modelSettingPath) throws Exception {
@@ -67,6 +73,14 @@ public class L2DAppModel extends LAppModel {
 
         if (mUpdateListener != null) {
             mUpdateListener.update(this);
+        }
+
+        // 调整自定义参数
+        Iterator<String> iterator = customParam.keySet().iterator();
+        while (iterator.hasNext()) {
+            String name =  iterator.next();
+            float value = customParam.get(name);
+            live2DModel.setParamFloat(name, value);
         }
 
         // 刷新显示

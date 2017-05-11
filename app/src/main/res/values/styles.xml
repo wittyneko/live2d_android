@@ -6,6 +6,13 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+
+        <!-- 无标题 -->
+        <item name="windowNoTitle">true</item>
+        <!-- 关闭工具栏 -->
+        <item name="windowActionBar">false</item>
+        <!-- 全屏 -->
+        <item name="android:windowFullscreen">true</item>
     </style>
 
 </resources>

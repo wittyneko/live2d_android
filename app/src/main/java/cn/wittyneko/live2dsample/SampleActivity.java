@@ -24,6 +24,7 @@ import android.view.ViewGroup.LayoutParams;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 /**
@@ -76,9 +77,12 @@ public class SampleActivity extends AppCompatActivity {
         live2dMgr.addModelPath(L2DAppDefine.MODEL_YANXI); // 添加模型
 
         LAppView live2dView = live2dMgr.createView(this);
-        rootView.addView(live2dView, 0, new ViewGroup.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+        rootView.addView(live2dView, new ViewGroup.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
 
 
+        LinearLayout vgCtrl = new LinearLayout(this);
+
+        // 切换模型
         Button btnChange = new Button(this);
         btnChange.setText("change");
         btnChange.setOnClickListener(new OnClickListener() {
@@ -88,8 +92,22 @@ public class SampleActivity extends AppCompatActivity {
                 live2dMgr.changeModel();//Live2D Event
             }
         });
+        vgCtrl.addView(btnChange, new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+
+        // 切换背景
+        Button btnChangeBg = new Button(this);
+        btnChangeBg.setText("change Bg");
+        btnChangeBg.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(), "change background", Toast.LENGTH_SHORT).show();
+                live2dMgr.changeBg();//Live2D Event
+            }
+        });
+        vgCtrl.addView(btnChangeBg, new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+
         FrameLayout.LayoutParams btnChangeLayoutParams = new FrameLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
         btnChangeLayoutParams.gravity = Gravity.TOP | Gravity.RIGHT;
-        rootView.addView(btnChange, btnChangeLayoutParams);
+        rootView.addView(vgCtrl, btnChangeLayoutParams);
     }
 }

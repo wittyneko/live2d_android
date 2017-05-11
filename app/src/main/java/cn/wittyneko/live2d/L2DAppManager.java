@@ -37,11 +37,12 @@ public class L2DAppManager extends LAppLive2DManager {
     public void loadModels(GL10 gl, String path) throws Throwable {
 
         L2DAppModel appModel = new L2DAppModel();
+        appModel.setLoadListener(mLoadListener);
+        appModel.setUpdateListener(mUpdateListener);
         Log.e("load begin",  "-> " + mFormat.format(System.currentTimeMillis()) + ", " + System.currentTimeMillis());
         appModel.load(gl, path);
         Log.e("load end",  "-> " + mFormat.format(System.currentTimeMillis()) + ", " + System.currentTimeMillis());
         appModel.feedIn();
-        appModel.setUpdateListener(mUpdateListener);
         models.add(appModel);
     }
 
