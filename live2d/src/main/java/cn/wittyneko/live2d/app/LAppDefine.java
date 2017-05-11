@@ -11,9 +11,9 @@ package cn.wittyneko.live2d.app;
  */
 public class LAppDefine {
 
-    public static boolean DEBUG_LOG = true;
-    public static boolean DEBUG_TOUCH_LOG = false;
-    public static boolean DEBUG_DRAW_HIT_AREA = false;
+    public static boolean DEBUG_LOG = true; // 打印Log
+    public static boolean DEBUG_TOUCH_LOG = false; // 打印触摸事件Log
+    public static boolean DEBUG_DRAW_HIT_AREA = false; // 显示点击区域
 
 
     // 最大最小缩放尺寸

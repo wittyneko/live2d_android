@@ -18,7 +18,8 @@ import cn.wittyneko.live2d.app.LAppModel;
  */
 
 public class L2DAppManager extends LAppLive2DManager {
-    private L2DAppModel.UpdateListener mUpdateListener; //界面刷新监听
+    private AppModelListener.LoadListener mLoadListener; //模型载入监听
+    private AppModelListener.UpdateListener mUpdateListener; //模型刷新监听
 
     SimpleDateFormat mFormat =new SimpleDateFormat("yyyy年MM月dd日 HH时mm分ss秒SSS毫秒");
     public L2DAppManager(Context context) {
@@ -137,16 +138,29 @@ public class L2DAppManager extends LAppLive2DManager {
         return areaName;
     }
 
-    public L2DAppModel.UpdateListener getUpdateListener() {
+    public AppModelListener.LoadListener getLoadListener() {
+        return mLoadListener;
+    }
+
+    public void setLoadListener(AppModelListener.LoadListener loadListener) {
+        this.mLoadListener = loadListener;
+
+        for (LAppModel appModel : models) {
+            L2DAppModel model = (L2DAppModel) appModel;
+            model.setLoadListener(mLoadListener);
+        }
+    }
+
+    public AppModelListener.UpdateListener getUpdateListener() {
         return mUpdateListener;
     }
 
-    public void setUpdateListener(L2DAppModel.UpdateListener updateListener) {
+    public void setUpdateListener(AppModelListener.UpdateListener updateListener) {
         this.mUpdateListener = updateListener;
 
         for (LAppModel appModel : models) {
             L2DAppModel model = (L2DAppModel) appModel;
-            model.setUpdateListener(updateListener);
+            model.setUpdateListener(mUpdateListener);
         }
     }
 }

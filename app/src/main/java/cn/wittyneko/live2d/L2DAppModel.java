@@ -3,6 +3,8 @@ package cn.wittyneko.live2d;
 import android.util.Log;
 import android.view.animation.AnimationUtils;
 
+import javax.microedition.khronos.opengles.GL10;
+
 import cn.wittyneko.live2d.app.LAppDefine;
 import cn.wittyneko.live2d.app.LAppModel;
 import cn.wittyneko.live2d.utils.SoundManager;
@@ -15,12 +17,22 @@ import jp.live2d.framework.L2DStandardID;
 
 public class L2DAppModel extends LAppModel {
 
-    private UpdateListener mUpdateListener; //界面刷新监听
+    private AppModelListener.LoadListener mLoadListener; //模型载入监听
+    private AppModelListener.UpdateListener mUpdateListener; //模型刷新监听
 
     // 嘴型列表
     private String[] mouthArray;
     private int mouthIndex;
     private long mouthStartTime;
+
+    @Override
+    public void load(GL10 gl, String modelSettingPath) throws Exception {
+        super.load(gl, modelSettingPath);
+
+        if (mLoadListener != null) {
+            mLoadListener.load(this);
+        }
+    }
 
     @Override
     public void update() {
@@ -98,15 +110,19 @@ public class L2DAppModel extends LAppModel {
         mouthArray = SoundManager.loadMouthOpen(volPath);
     }
 
-    public UpdateListener getUpdateListener() {
+    public AppModelListener.LoadListener getLoadListener() {
+        return mLoadListener;
+    }
+
+    public void setLoadListener(AppModelListener.LoadListener loadListener) {
+        this.mLoadListener = loadListener;
+    }
+
+    public AppModelListener.UpdateListener getUpdateListener() {
         return mUpdateListener;
     }
 
-    public void setUpdateListener(UpdateListener updateListener) {
+    public void setUpdateListener(AppModelListener.UpdateListener updateListener) {
         this.mUpdateListener = updateListener;
-    }
-
-    public interface UpdateListener {
-        void update(LAppModel model);
     }
 }

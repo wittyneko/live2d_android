@@ -418,8 +418,8 @@ public abstract class LAppModel extends L2DBaseModel {
 
 
     public void feedIn() {
-        alpha = 0;
-        accAlpha = 0.1f;
+        alpha = 0; // 载入初始透明度
+        accAlpha = 0.1f; // 载入渐变透明度
     }
 
 
