@@ -1,1 +1,1 @@
-include ':app', ':live2d'
+include ':app', ':live2d', ':FaceppUI'
