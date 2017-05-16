@@ -7,7 +7,6 @@
 
 package cn.wittyneko.live2dsample;
 
-import cn.wittyneko.live2d.L2DAppDefine;
 import cn.wittyneko.live2d.L2DAppManager;
 import cn.wittyneko.live2d.app.LAppLive2DManager;
 import cn.wittyneko.live2d.app.LAppView;
@@ -25,7 +24,6 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 /**
  * 使用示例
@@ -44,7 +42,7 @@ public class ChangeActivity extends AppCompatActivity {
 
         FileManager.init(getApplicationContext());
         SoundManager.init(this);
-        setupGUI();
+        initLive2d();
     }
 
 
@@ -68,7 +66,7 @@ public class ChangeActivity extends AppCompatActivity {
     }
 
 
-    void setupGUI() {
+    void initLive2d() {
         FrameLayout rootView = new FrameLayout(this);
         setContentView(rootView, new ViewGroup.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
 

@@ -6,6 +6,7 @@ import android.os.Build;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.util.AttributeSet;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
@@ -55,6 +56,9 @@ public class ParamView extends LinearLayout {
         setDef(def);
         addView(tvName, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         addView(seekBar, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        View line = new View(context);
+        line.setBackgroundColor(Color.WHITE);
+        addView(line, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 3));
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -106,10 +110,22 @@ public class ParamView extends LinearLayout {
     }
 
     public void setDef(float def) {
-        this.def = def;
-        cur = def;
-        seekBar.setProgress((int) (def * 100));
+        cur = this.def = def;
+        setProgress(cur);
+        //seekBar.setProgress((int) (def * 100));
         update();
+    }
+
+    public float getProgress() {
+        return cur;
+    }
+
+    public void setProgress(float progress) {
+        int minValue = (int) (Math.abs(min) * 100);
+        int maxValue = (int) (max * 100);
+        int progressValue = (int) (progress * 100);
+        progressValue = progressValue + minValue;
+        seekBar.setProgress(progressValue);
     }
 
     public String getName() {
