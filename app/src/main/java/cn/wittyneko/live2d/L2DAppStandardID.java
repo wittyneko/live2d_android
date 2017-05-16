@@ -6,5 +6,5 @@ package cn.wittyneko.live2d;
  */
 public interface L2DAppStandardID {
 
-    String PARAM_MOUTH_CHARTLET = "PARAM_mouth"; // 贴图嘴型
+    String PARAM_MOUTH_CHARTLET = "PARAM_MOUTH_PIC"; // 贴图嘴型前缀
 }

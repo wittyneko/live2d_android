@@ -14,6 +14,11 @@ Live2D文件夹为`/sdcard/Android/data/cn.wittyneko.live2dsample/files/live2d`�
 - 添加模型和背景切换功能
 - 添加模型加载和刷新监听接口
 - 添加动作参数手动调节功能
+- 声音嘴形匹配和过滤贴图嘴形
+
+###　嘴形匹配
+嘴形匹配需要对嘴形进行重置，动作参数名称可通过`L2DAppStandardID`修改`PARAM_MOUTH_CHARTLET`设置。<br/>
+默认会重置动作参数前缀为`PARAM_MOUTH_CHARTLET`设置的全部参数为默认值。
 
 ### Face++ 
 Face++试用期到2017年7月1号，过期可以设置系统时间在未过期前，清空数据即可进入试用。

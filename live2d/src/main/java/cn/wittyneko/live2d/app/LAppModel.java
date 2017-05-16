@@ -53,7 +53,7 @@ public abstract class LAppModel extends L2DBaseModel {
     //=============模型信息================//
 
     /**
-     * TODO: 获取模型参数列表和部件信息
+     * 获取模型参数列表和部件信息
      */
     public void getModelInfo() {
 
@@ -271,10 +271,11 @@ public abstract class LAppModel extends L2DBaseModel {
 
         if (expressionManager != null) {
             //Log.e("expressions", "-> " + expressionManager.isFinished());
-            if (!expressionManager.isFinished()) {
-                resetMouth();
-            }
             expressionManager.updateParam(live2DModel);
+            // 过滤表情嘴形
+//            if (!expressionManager.isFinished()) {
+//                resetMouth();
+//            }
         }
 
 
@@ -527,7 +528,7 @@ public abstract class LAppModel extends L2DBaseModel {
     }
 
     /**
-     * 重置清空嘴型
+     * 重置清空嘴型(嘴形匹配过滤动作和表情携带嘴形)
      */
     public abstract void resetMouth();
 

@@ -4,6 +4,7 @@ import android.util.Log;
 import android.view.animation.AnimationUtils;
 
 import java.util.Iterator;
+import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
 import javax.microedition.khronos.opengles.GL10;
@@ -12,6 +13,7 @@ import cn.wittyneko.live2d.app.LAppDefine;
 import cn.wittyneko.live2d.app.LAppModel;
 import cn.wittyneko.live2d.utils.SoundManager;
 import jp.live2d.framework.L2DStandardID;
+import jp.live2d.param.ParamDefFloat;
 
 /**
  * 模型实例
@@ -30,10 +32,21 @@ public class L2DAppModel extends LAppModel {
 
     // 调整参数
     public ConcurrentHashMap<String, Float> customParam = new ConcurrentHashMap<>();
+    private ConcurrentHashMap<String, Float> mouthChartletParam = new ConcurrentHashMap<>(); //贴图嘴形
 
     @Override
     public void load(GL10 gl, String modelSettingPath) throws Exception {
         super.load(gl, modelSettingPath);
+
+        // 获取动作参数列表
+        List<ParamDefFloat> paramList = getLive2DModel().getModelImpl().getParamDefSet().getParamDefFloatList();
+        for (final ParamDefFloat param : paramList) {
+            //Log.e(TAG + "param", "-> " + param.getParamID().toString() + ", " + param.getMinValue() + ", " + param.getMaxValue() + ", " + param.getDefaultValue());
+            // 添加贴图嘴形到过滤列表
+            if (param.getParamID().toString().startsWith(L2DAppStandardID.PARAM_MOUTH_CHARTLET)) {
+                mouthChartletParam.put(param.getParamID().toString(), param.getDefaultValue());
+            }
+        }
 
         if (mLoadListener != null) {
             mLoadListener.load(this);
@@ -78,7 +91,7 @@ public class L2DAppModel extends LAppModel {
         // 调整自定义参数
         Iterator<String> iterator = customParam.keySet().iterator();
         while (iterator.hasNext()) {
-            String name =  iterator.next();
+            String name = iterator.next();
             float value = customParam.get(name);
             live2DModel.setParamFloat(name, value);
         }
@@ -91,13 +104,13 @@ public class L2DAppModel extends LAppModel {
     @Override
     public void resetMouth() {
         // 过滤贴图表情
-        live2DModel.setParamFloat(L2DAppStandardID.PARAM_MOUTH_CHARTLET, 0);
-        for (int i = 1; i <= 6; i++) {
-            if (i < 10) {
-                live2DModel.setParamFloat(L2DAppStandardID.PARAM_MOUTH_CHARTLET + "0" + i, 0);
-            } else {
-                live2DModel.setParamFloat(L2DAppStandardID.PARAM_MOUTH_CHARTLET + i, 0);
-            }
+        //live2DModel.setParamFloat(L2DAppStandardID.PARAM_MOUTH_CHARTLET, 0);
+        Iterator<String> iterator = mouthChartletParam.keySet().iterator();
+        while (iterator.hasNext()) {
+            String name = iterator.next();
+            float value = mouthChartletParam.get(name);
+            live2DModel.setParamFloat(name, value);
+            //live2DModel.setParamFloat(name, 0);
         }
     }
 
