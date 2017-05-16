@@ -1,8 +1,8 @@
 ### 模型路径
-模型路径在内置SD卡应用包名下`files` 文件夹下，当前Sample工程目录为`/sdcard/Android/data/cn.wittyneko.live2dsample/files`。
-Live2D文件夹为`/sdcard/Android/data/cn.wittyneko.live2dsample/files/live2d`。
-背景文件夹为 `/sdcard/Android/data/cn.wittyneko.live2dsample/files/image`。
-应用自动遍历识别后者为`model.json`的Live2D模型配置，和背景图片文件。
+模型路径在内置SD卡应用包名下`files` 文件夹下，当前Sample工程目录为`/sdcard/Android/data/cn.wittyneko.live2dsample/files`。<br/>
+Live2D文件夹为`/sdcard/Android/data/cn.wittyneko.live2dsample/files/live2d`。<br/>
+背景文件夹为 `/sdcard/Android/data/cn.wittyneko.live2dsample/files/image`。<br/>
+应用自动遍历识别后缀为`model.json`的Live2D模型配置，和背景图片文件。<br/>
 
 ### Live2D 
 为什么使用2.0版本，2.1版本采用NDK开发修改量大，并且存在平台兼容性问题，同时3.0也即将发布，2.0是目前最快捷的开发方案，针对官方例子出那种的问题，做了一些优化
