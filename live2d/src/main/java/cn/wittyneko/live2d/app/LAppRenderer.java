@@ -128,7 +128,9 @@ public class LAppRenderer implements GLSurfaceView.Renderer {
                 LAppModel model = delegate.getModel(i);
                 if (model.isInitialized() && !model.isUpdating()) {
                     model.update();
-                    model.draw(gl);
+                    // 避免多个delegate崩溃
+                    if (!delegate.isPause())
+                        model.draw(gl);
                 }
             }
         }

@@ -34,9 +34,9 @@ public class L2DAppManager extends LAppLive2DManager {
 
     // 加载模型
     @Override
-    public void loadModels(GL10 gl, String path) throws Throwable {
+    public void loadModels(GL10 gl, String path, int position, int index) throws Throwable {
 
-        L2DAppModel appModel = new L2DAppModel();
+        L2DAppModel appModel = new L2DAppModel(position, index);
         appModel.setLoadListener(mLoadListener);
         appModel.setUpdateListener(mUpdateListener);
         Log.e("load begin",  "-> " + mFormat.format(System.currentTimeMillis()) + ", " + System.currentTimeMillis());

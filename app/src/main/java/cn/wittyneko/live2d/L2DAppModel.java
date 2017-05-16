@@ -1,6 +1,5 @@
 package cn.wittyneko.live2d;
 
-import android.util.Log;
 import android.view.animation.AnimationUtils;
 
 import java.util.Iterator;
@@ -22,6 +21,8 @@ import jp.live2d.param.ParamDefFloat;
 
 public class L2DAppModel extends LAppModel {
 
+    private int listPosition; // 第几个列表
+    private int listIndex; // 第几个模型
     private AppModelListener.LoadListener mLoadListener; //模型载入监听
     private AppModelListener.UpdateListener mUpdateListener; //模型刷新监听
 
@@ -33,6 +34,16 @@ public class L2DAppModel extends LAppModel {
     // 调整参数
     public ConcurrentHashMap<String, Float> customParam = new ConcurrentHashMap<>();
     private ConcurrentHashMap<String, Float> mouthChartletParam = new ConcurrentHashMap<>(); //贴图嘴形
+
+    public L2DAppModel() {
+        super();
+    }
+
+    public L2DAppModel(int position, int index) {
+        super();
+        this.listPosition = position;
+        this.listIndex = index;
+    }
 
     @Override
     public void load(GL10 gl, String modelSettingPath) throws Exception {
@@ -135,6 +146,22 @@ public class L2DAppModel extends LAppModel {
         mouthIndex = 0;
         mouthStartTime = AnimationUtils.currentAnimationTimeMillis();
         mouthArray = SoundManager.loadMouthOpen(volPath);
+    }
+
+    public int getListPosition() {
+        return listPosition;
+    }
+
+    public void setListPosition(int listPosition) {
+        this.listPosition = listPosition;
+    }
+
+    public int getListIndex() {
+        return listIndex;
+    }
+
+    public void setListIndex(int listIndex) {
+        this.listIndex = listIndex;
     }
 
     public AppModelListener.LoadListener getLoadListener() {

@@ -45,7 +45,8 @@ public abstract class LAppLive2DManager {
 
     protected boolean reloadFlg;
     protected boolean reloadBg;
-    protected boolean firstLoad =  true;
+    protected boolean firstLoad = true;
+    private boolean isPause;
 
 
     public LAppLive2DManager(Context context) {
@@ -103,11 +104,40 @@ public abstract class LAppLive2DManager {
         reloadFlg = true;
     }
 
-    // 切换第N个模型
+    // 切换第N个列表模型
     public void changeModel(int no) {
+        changeModel(no, -2);
+    }
+
+    /**
+     * 切换第N个列表模型
+     *
+     * @param no    第一个模型列表
+     * @param index -1：默认状态不加载；-2：下一个模型；-3：上一个模型；其它负数重置到开始位置；正数为具体值
+     */
+    public void changeModel(int no, int index) {
         if (!mPaths.isEmpty() && no < mPaths.size()) {
             ModelPath path = mPaths.get(no);
-            path.setIndex(path.getIndex() + 1);
+            switch (index) {
+                case -2:
+                    path.setIndex(path.getIndex() + 1);
+                    break;
+                case -3:
+                    index = path.getIndex();
+                    if (index > -1) {
+                        path.setIndex(index - 1);
+                    } else {
+                        path.setIndex(0);
+                    }
+                    break;
+                default:
+                    if (index >= -1) {
+                        path.setIndex(index);
+                    } else {
+                        path.setIndex(0);
+                    }
+                    break;
+            }
         }
         reloadFlg = true;
     }
@@ -146,7 +176,7 @@ public abstract class LAppLive2DManager {
         int index = mBgPaths.getIndex();
         ArrayList<String> pathList = mBgPaths.getPath();
 
-        if (index == -1)
+        if (index < 0)
             return;
 
         if (pathList != null && !pathList.isEmpty()) {
@@ -183,7 +213,35 @@ public abstract class LAppLive2DManager {
 
     // 切换背景
     public void changeBg() {
-        mBgPaths.setIndex(mBgPaths.getIndex() + 1);
+        changeBg(-2);
+    }
+
+    /**
+     * 切换背景
+     *
+     * @param index -1：默认状态不加载；-2：下一个；-3：上一个；其它负数重置到开始位置；正数为具体值
+     */
+    public void changeBg(int index) {
+        switch (index) {
+            case -2:
+                mBgPaths.setIndex(mBgPaths.getIndex() + 1);
+                break;
+            case -3:
+                index = mBgPaths.getIndex();
+                if (index > -1) {
+                    mBgPaths.setIndex(index - 1);
+                } else {
+                    mBgPaths.setIndex(0);
+                }
+                break;
+            default:
+                if (index >= -1) {
+                    mBgPaths.setIndex(index);
+                } else {
+                    mBgPaths.setIndex(0);
+                }
+                break;
+        }
         reloadBg = true;
     }
 
@@ -210,7 +268,8 @@ public abstract class LAppLive2DManager {
                 releaseModel();
                 // 模型列表存在
                 if (!mPaths.isEmpty()) {
-                    for (ModelPath path : mPaths) {
+                    for (int position = 0; position < mPaths.size(); position++) {
+                        ModelPath path = mPaths.get(position);
                         int index = path.getIndex();
                         ArrayList<String> pathList = path.getPath();
                         // 当前模型存在一个以上路径
@@ -220,12 +279,12 @@ public abstract class LAppLive2DManager {
                                 path.setIndex(index);
                             }
                             String pathStr = null;
-                            if (index != -1) {
-                                 pathStr = pathList.get(index);
+                            if (index > -1) {
+                                pathStr = pathList.get(index);
                             }
 
                             if (!TextUtils.isEmpty(pathStr)) {
-                                loadModels(gl, pathStr);
+                                loadModels(gl, pathStr, position, index);
                             }
                         }
                     }
@@ -238,8 +297,16 @@ public abstract class LAppLive2DManager {
         firstLoad = false;
     }
 
-    // 加载模型
-    public abstract void loadModels(GL10 gl, String path) throws Throwable;
+    /**
+     * 加载模型
+     *
+     * @param gl
+     * @param path     路径
+     * @param position 第几个列表
+     * @param index    第几个模型
+     * @throws Throwable
+     */
+    public abstract void loadModels(GL10 gl, String path, int position, int index) throws Throwable;
 
     //===========================================
     //=================绘制显示===================
@@ -276,9 +343,13 @@ public abstract class LAppLive2DManager {
         return view.getViewMatrix();
     }
 
+    public boolean isPause() {
+        return isPause;
+    }
 
     public void onResume() {
         if (LAppDefine.DEBUG_LOG) Log.d(TAG, "onResume");
+        isPause = false;
         if (view != null) {
             view.onResume();
         }
@@ -287,6 +358,7 @@ public abstract class LAppLive2DManager {
 
     public void onPause() {
         if (LAppDefine.DEBUG_LOG) Log.d(TAG, "onPause");
+        isPause = true;
         if (view != null) {
             view.onPause();
         }
