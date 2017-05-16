@@ -12,7 +12,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="cn.wittyneko.live2dsample.MainActivity"
+        <activity android:name=".WelcomeActivity"
                   android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -20,6 +20,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".CustomParamActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity android:name=".ChangeActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity android:name=".FaceppActivity"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

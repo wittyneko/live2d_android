@@ -30,7 +30,7 @@ import android.widget.Toast;
 /**
  * 使用示例
  */
-public class SampleActivity extends AppCompatActivity {
+public class ChangeActivity extends AppCompatActivity {
 
     private LAppLive2DManager live2dMgr;
 
@@ -73,8 +73,14 @@ public class SampleActivity extends AppCompatActivity {
         setContentView(rootView, new ViewGroup.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
 
         live2dMgr = new L2DAppManager(this);
-        live2dMgr.addBgPath(L2DAppDefine.BACK_IMAGE_NAME); // 添加背景
-        live2dMgr.addModelPath(L2DAppDefine.MODEL_YANXI); // 添加模型
+        //live2dMgr.addBgPath(L2DAppDefine.BACK_IMAGE_NAME); // 添加背景
+        //live2dMgr.addModelPath(L2DAppDefine.MODEL_YANXI); // 添加模型
+        for (String path : ModelInfo.bgPath) {
+            live2dMgr.addBgPath(path); // 添加背景
+        }
+        for (String path : ModelInfo.modelPath) {
+            live2dMgr.addModelPath(path); // 添加模型
+        }
 
         LAppView live2dView = live2dMgr.createView(this);
         rootView.addView(live2dView, new ViewGroup.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
@@ -88,7 +94,7 @@ public class SampleActivity extends AppCompatActivity {
         btnChange.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(), "change model", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(), "change model", Toast.LENGTH_SHORT).show();
                 live2dMgr.changeModel();//Live2D Event
             }
         });
@@ -100,7 +106,7 @@ public class SampleActivity extends AppCompatActivity {
         btnChangeBg.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(), "change background", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(), "change background", Toast.LENGTH_SHORT).show();
                 live2dMgr.changeBg();//Live2D Event
             }
         });

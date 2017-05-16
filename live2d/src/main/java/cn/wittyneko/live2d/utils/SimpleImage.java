@@ -38,7 +38,7 @@ public class SimpleImage {
     public SimpleImage(GL10 gl, InputStream in) {
         try {
             texture = LoadUtil.loadTexture(gl, in, true);
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
