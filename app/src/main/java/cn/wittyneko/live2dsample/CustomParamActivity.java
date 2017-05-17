@@ -1,5 +1,6 @@
 package cn.wittyneko.live2dsample;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -141,6 +142,7 @@ public class CustomParamActivity extends AppCompatActivity {
         vgCtrl.addView(btnChangeBg, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
 
 
+        // 显示隐藏参数设置
         Button btnParam = new Button(this);
         btnParam.setText("Param Set");
         btnParam.setOnClickListener(new View.OnClickListener() {
@@ -155,6 +157,18 @@ public class CustomParamActivity extends AppCompatActivity {
             }
         });
         vgCtrl.addView(btnParam, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+
+        // NEW
+        Button btnNew = new Button(this);
+        btnNew.setText("New");
+        btnNew.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(CustomParamActivity.this, CustomParamActivity.class);
+                startActivity(intent);
+            }
+        });
+        vgCtrl.addView(btnNew, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
 
         FrameLayout.LayoutParams btnChangeLayoutParams = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         btnChangeLayoutParams.gravity = Gravity.TOP | Gravity.LEFT;
