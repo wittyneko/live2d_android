@@ -7,6 +7,7 @@
 
 package cn.wittyneko.live2dsample;
 
+import cn.wittyneko.live2d.L2DAppDefine;
 import cn.wittyneko.live2d.L2DAppManager;
 import cn.wittyneko.live2d.app.LAppLive2DManager;
 import cn.wittyneko.live2d.app.LAppView;
@@ -85,6 +86,19 @@ public class ChangeActivity extends AppCompatActivity {
 
 
         LinearLayout vgCtrl = new LinearLayout(this);
+        vgCtrl.setOrientation(LinearLayout.VERTICAL);
+
+        // 重新加载模型
+        Button btnReload = new Button(this);
+        btnReload.setText("reload");
+        btnReload.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Toast.makeText(getApplicationContext(), "reload model", Toast.LENGTH_SHORT).show();
+                live2dMgr.reloadModel();//Live2D Event
+            }
+        });
+        vgCtrl.addView(btnReload, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
 
         // 切换模型
         Button btnChange = new Button(this);
@@ -109,6 +123,17 @@ public class ChangeActivity extends AppCompatActivity {
             }
         });
         vgCtrl.addView(btnChangeBg, new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+
+        // 重新加载模型
+        Button btnShowHit = new Button(this);
+        btnShowHit.setText("show hit");
+        btnShowHit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                L2DAppDefine.DEBUG_DRAW_HIT_AREA = !L2DAppDefine.DEBUG_DRAW_HIT_AREA;
+            }
+        });
+        vgCtrl.addView(btnShowHit, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
 
         FrameLayout.LayoutParams btnChangeLayoutParams = new FrameLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
         btnChangeLayoutParams.gravity = Gravity.TOP | Gravity.RIGHT;
