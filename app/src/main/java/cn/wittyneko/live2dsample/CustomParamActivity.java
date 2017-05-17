@@ -28,14 +28,18 @@ public class CustomParamActivity extends AppCompatActivity {
     private L2DAppManager live2dMgr;
     private LinearLayout vgParamList;
     private View vgParamScroll;
+    private LinearLayout vgPositionList;
+    private View vgPositionScroll;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_custom_param);
         live2dFrame = (FrameLayout) findViewById(R.id.live2d_frame);
-        vgParamList = (LinearLayout) findViewById(R.id.param_list);
         vgParamScroll = findViewById(R.id.param_scroll);
+        vgParamList = (LinearLayout) findViewById(R.id.param_list);
+        vgPositionScroll = findViewById(R.id.position_scroll);
+        vgPositionList = (LinearLayout) findViewById(R.id.position_list);
         initLive2d();
     }
 
@@ -74,7 +78,7 @@ public class CustomParamActivity extends AppCompatActivity {
 
         live2dMgr.setLoadListener(new AppModelListener.LoadListener() {
             @Override
-            public void load(L2DAppModel model) {
+            public void load(final L2DAppModel model) {
                 // 获取动作参数列表
                 List<ParamDefFloat> paramList = model.getLive2DModel().getModelImpl().getParamDefSet().getParamDefFloatList();
                 String modelName = model.getModelSetting().getModelName();
@@ -82,6 +86,67 @@ public class CustomParamActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         vgParamList.removeAllViews();
+
+                        vgPositionList.removeAllViews();
+                        // 初始化位置设置参数View
+                        {
+                            float minTranslate = -3;
+                            float maxTranslate = 3;
+                            float maxScale = 6;
+                            // centerX
+                            ParamView centerX = new ParamView(vgParamList.getContext());
+                            centerX.setName("centerX");
+                            centerX.setMin(minTranslate);
+                            centerX.setMax(maxTranslate);
+                            centerX.setDef(model.getModelMatrix().getCenterX());
+                            centerX.setProgressChangedListener(new ParamView.ProgressChangedListener() {
+                                @Override
+                                public void onProgressChanged(ParamView paramView, float progress) {
+                                    for (int i = 0; i < live2dMgr.getModelNum(); i++) {
+                                        L2DAppModel model = (L2DAppModel) live2dMgr.getModel(i);
+                                        model.getModelMatrix().centerX(progress);
+                                    }
+                                }
+                            });
+                            vgPositionList.addView(centerX, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+
+                            // centerY
+                            ParamView centerY = new ParamView(vgParamList.getContext());
+                            centerY.setName("centerY");
+                            centerY.setMin(minTranslate);
+                            centerY.setMax(maxTranslate);
+                            centerY.setDef(model.getModelMatrix().getCenterY());
+                            centerY.setProgressChangedListener(new ParamView.ProgressChangedListener() {
+                                @Override
+                                public void onProgressChanged(ParamView paramView, float progress) {
+                                    for (int i = 0; i < live2dMgr.getModelNum(); i++) {
+                                        L2DAppModel model = (L2DAppModel) live2dMgr.getModel(i);
+                                        model.getModelMatrix().centerY(progress);
+                                    }
+                                }
+                            });
+                            vgPositionList.addView(centerY, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+
+                            // setWidth
+                            ParamView width = new ParamView(vgParamList.getContext());
+                            width.setName("width");
+                            width.setMin(0);
+                            width.setMax(maxScale);
+                            width.setDef(model.getModelMatrix().getWidth());
+                            width.setProgressChangedListener(new ParamView.ProgressChangedListener() {
+                                @Override
+                                public void onProgressChanged(ParamView paramView, float progress) {
+                                    for (int i = 0; i < live2dMgr.getModelNum(); i++) {
+                                        L2DAppModel model = (L2DAppModel) live2dMgr.getModel(i);
+                                        model.getModelMatrix().setWidth(progress);
+                                        model.getModelMatrix().setCenterPosition(model.getModelMatrix().getCenterX(), model.getModelMatrix().getCenterY());
+                                    }
+                                }
+                            });
+                            vgPositionList.addView(width, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+
+
+                        }
                     }
                 });
                 for (final ParamDefFloat param : paramList) {
@@ -116,6 +181,18 @@ public class CustomParamActivity extends AppCompatActivity {
 
         LinearLayout vgCtrl = new LinearLayout(this);
         vgCtrl.setOrientation(LinearLayout.VERTICAL);
+
+        // 重新加载模型
+        Button btnReload = new Button(this);
+        btnReload.setText("reload");
+        btnReload.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Toast.makeText(getApplicationContext(), "reload model", Toast.LENGTH_SHORT).show();
+                live2dMgr.reloadModel();//Live2D Event
+            }
+        });
+        vgCtrl.addView(btnReload, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
 
         // 切换模型
         Button btnChange = new Button(this);
@@ -158,14 +235,17 @@ public class CustomParamActivity extends AppCompatActivity {
         });
         vgCtrl.addView(btnParam, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
 
-        // NEW
+        // 位置设置
         Button btnNew = new Button(this);
-        btnNew.setText("New");
+        btnNew.setText("Position Set");
         btnNew.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(CustomParamActivity.this, CustomParamActivity.class);
-                startActivity(intent);
+                if (vgPositionScroll.getVisibility() == View.VISIBLE) {
+                    vgPositionScroll.setVisibility(View.GONE);
+                } else {
+                    vgPositionScroll.setVisibility(View.VISIBLE);
+                }
             }
         });
         vgCtrl.addView(btnNew, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));

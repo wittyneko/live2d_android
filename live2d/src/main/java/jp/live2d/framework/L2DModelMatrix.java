@@ -9,12 +9,17 @@ package jp.live2d.framework;
 
 public class L2DModelMatrix extends L2DMatrix44 {
 
-    private float width;
-    private float height;
+    private float mWidth;
+    private float mHeight;
+    private float DEFAULT = Float.MIN_VALUE;
+    private float centerX = DEFAULT;
+    private float centerY = DEFAULT;
+    private float width = DEFAULT;
+    private float height = DEFAULT;
 
     public L2DModelMatrix(float w, float h) {
-        width = w;
-        height = h;
+        mWidth = w;
+        mHeight = h;
     }
 
     public void setPosition(float x, float y) {
@@ -23,8 +28,10 @@ public class L2DModelMatrix extends L2DMatrix44 {
 
 
     public void setCenterPosition(float x, float y) {
-        float w = width * getScaleX();
-        float h = height * getScaleY();
+        centerX = x;
+        centerY = y;
+        float w = mWidth * getScaleX();
+        float h = mHeight * getScaleY();
         translate(x - w / 2, y - h / 2);
     }
 
@@ -35,7 +42,7 @@ public class L2DModelMatrix extends L2DMatrix44 {
 
 
     public void bottom(float y) {
-        float h = height * getScaleY();
+        float h = mHeight * getScaleY();
         translateY(y - h);
     }
 
@@ -46,19 +53,21 @@ public class L2DModelMatrix extends L2DMatrix44 {
 
 
     public void right(float x) {
-        float w = width * getScaleX();
+        float w = mWidth * getScaleX();
         translateX(x - w);
     }
 
 
     public void centerX(float x) {
-        float w = width * getScaleX();
+        centerX = x;
+        float w = mWidth * getScaleX();
         translateX(x - w / 2);
     }
 
 
     public void centerY(float y) {
-        float h = height * getScaleY();
+        centerY = y;
+        float h = mHeight * getScaleY();
         translateY(y - h / 2);
     }
 
@@ -74,15 +83,33 @@ public class L2DModelMatrix extends L2DMatrix44 {
 
 
     public void setHeight(float h) {
-        float scaleX = h / height;
+        height = h;
+        float scaleX = h / mHeight;
         float scaleY = -scaleX;
         scale(scaleX, scaleY);
     }
 
 
     public void setWidth(float w) {
-        float scaleX = w / width;
+        width = w;
+        float scaleX = w / mWidth;
         float scaleY = -scaleX;
         scale(scaleX, scaleY);
+    }
+
+    public float getCenterX() {
+        return centerX;
+    }
+
+    public float getCenterY() {
+        return centerY;
+    }
+
+    public float getWidth() {
+        return width;
+    }
+
+    public float getHeight() {
+        return height;
     }
 }

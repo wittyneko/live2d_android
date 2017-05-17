@@ -85,14 +85,19 @@ public abstract class LAppLive2DManager {
     }
 
     // 获取当前加载的第N个模型实例
-    public LAppModel getModel(int no) {
-        if (no >= models.size()) return null;
-        return models.get(no);
+    public LAppModel getModel(int position) {
+        if (position >= models.size()) return null;
+        return models.get(position);
     }
 
     // 获取加载的模型数量
     public int getModelNum() {
         return models.size();
+    }
+
+    // 重新加载模型
+    public void reloadModel() {
+        reloadFlg = true;
     }
 
     //切换模型
@@ -112,12 +117,12 @@ public abstract class LAppLive2DManager {
     /**
      * 切换第N个列表模型
      *
-     * @param no    第一个模型列表
+     * @param position    第一个模型列表
      * @param index -1：默认状态不加载；-2：下一个模型；-3：上一个模型；其它负数重置到开始位置；正数为具体值
      */
-    public void changeModel(int no, int index) {
-        if (!mPaths.isEmpty() && no < mPaths.size()) {
-            ModelPath path = mPaths.get(no);
+    public void changeModel(int position, int index) {
+        if (!mPaths.isEmpty() && position < mPaths.size()) {
+            ModelPath path = mPaths.get(position);
             switch (index) {
                 case -2:
                     path.setIndex(path.getIndex() + 1);
