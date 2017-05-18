@@ -7,4 +7,5 @@ package cn.wittyneko.live2d;
 public interface L2DAppStandardID {
 
     String PARAM_MOUTH_CHARTLET = "PARAM_MOUTH_PIC"; // 贴图嘴型前缀
+    String PARAM_MOUTH_SIZE = "PARAM_MOUTH_SIZE"; // 嘴型大小
 }

@@ -6,6 +6,7 @@
  */
 package jp.live2d.framework;
 
+import cn.wittyneko.live2d.app.LAppDefine;
 import jp.live2d.ALive2DModel;
 import jp.live2d.motion.AMotion;
 import jp.live2d.motion.MotionQueueManager;
@@ -17,8 +18,8 @@ import jp.live2d.motion.MotionQueueManager;
 public class L2DMotionManager extends MotionQueueManager {
 
 
-    private int currentPriority;
-    private int reservePriority;
+    private int currentPriority; // 当前动作优先级
+    private int reservePriority; // 预备动作优先级
 
 
     public int getCurrentPriority() {
@@ -31,6 +32,12 @@ public class L2DMotionManager extends MotionQueueManager {
     }
 
 
+    /**
+     * 预备动作测试
+     *
+     * @param priority
+     * @return
+     */
     public boolean reserveMotion(int priority) {
         if (reservePriority >= priority) {
             return false;
@@ -52,15 +59,21 @@ public class L2DMotionManager extends MotionQueueManager {
     public boolean updateParam(ALive2DModel model) {
         boolean updated = super.updateParam(model);
         if (isFinished()) {
-            currentPriority = 0;
+            currentPriority = LAppDefine.PRIORITY_NONE;
         }
         return updated;
     }
 
-
+    /**
+     * 开始动作
+     *
+     * @param motion
+     * @param priority
+     * @return
+     */
     public int startMotionPrio(AMotion motion, int priority) {
         if (priority == reservePriority) {
-            reservePriority = 0;
+            reservePriority = LAppDefine.PRIORITY_NONE;
         }
         currentPriority = priority;
         return super.startMotion(motion, false);

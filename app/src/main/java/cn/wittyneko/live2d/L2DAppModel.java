@@ -55,7 +55,14 @@ public class L2DAppModel extends LAppModel {
             //Log.e(TAG + "param", "-> " + param.getParamID().toString() + ", " + param.getMinValue() + ", " + param.getMaxValue() + ", " + param.getDefaultValue());
             // 添加贴图嘴形到过滤列表
             if (param.getParamID().toString().startsWith(L2DAppStandardID.PARAM_MOUTH_CHARTLET)) {
+                // 其它嘴型
                 mouthChartletParam.put(param.getParamID().toString(), param.getDefaultValue());
+            } else if (param.getParamID().toString().startsWith(L2DAppStandardID.PARAM_MOUTH_SIZE)) {
+                // 嘴大小
+                mouthChartletParam.put(param.getParamID().toString(), param.getDefaultValue());
+            } else if (param.getParamID().toString().startsWith(L2DStandardID.PARAM_MOUTH_FORM)) {
+                // 对话嘴形状
+                mouthChartletParam.put(param.getParamID().toString(), 0.4f);
             }
         }
 
@@ -80,8 +87,6 @@ public class L2DAppModel extends LAppModel {
 
             if (mouthIndex < mouthArray.length) {
                 resetMouth();
-                // 设置嘴形状
-                live2DModel.setParamFloat(L2DStandardID.PARAM_MOUTH_FORM, 0.2f);
                 // 播放张嘴大小
                 //Log.e("vol", "-> " + mouthArray[mouthIndex]);
                 float mouth = Float.valueOf(mouthArray[mouthIndex]);
