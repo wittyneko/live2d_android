@@ -18,7 +18,7 @@ public class FaceppActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        PermissionsManagerFragment permissionsManagerFragment = PermissionsManagerFragment.getInstance(this);
+        final PermissionsManagerFragment permissionsManagerFragment = PermissionsManagerFragment.getInstance(this);
         permissionsManagerFragment
                 .setListener(new PermissionsManagerFragment.PermissionListener() {
                     @Override
@@ -29,6 +29,7 @@ public class FaceppActivity extends AppCompatActivity {
                     @Override
                     public void denied(String permission) {
                         Toast.makeText(FaceppActivity.this, "获取权限失败", Toast.LENGTH_SHORT).show();
+                        permissionsManagerFragment.showDialog(null);
                     }
                 })
                 .request(Manifest.permission.CAMERA);
