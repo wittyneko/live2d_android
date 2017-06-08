@@ -8,7 +8,9 @@
 package cn.wittyneko.live2d.utils;
 
 import jp.live2d.util.UtSystem;
+
 import android.app.Activity;
+import android.content.Context;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -16,6 +18,7 @@ import android.hardware.SensorManager;
 import android.os.Build;
 import android.view.Display;
 import android.view.Surface;
+import android.view.WindowManager;
 
 /**
  * 加速度
@@ -42,18 +45,18 @@ public class AccelHelper {
 	private float[] accelerometerValues = new float[3];
 	private float[] geomagneticMatrix = new float[3];
 	private boolean sensorReady;
-	private final Activity activity;
+	private final Context context;
 	private final Sensor accelerometer;
 	private final Sensor magneticField;
 
 	private float accel[] = new float[3] ;
 
 
-	public AccelHelper(Activity activity) {
+	public AccelHelper(Context context) {
 		sensorListener = new MySensorListener();
-		sensorManager = (SensorManager) activity.getSystemService(Activity.SENSOR_SERVICE);
+		sensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
 
-		this.activity=activity;
+		this.context=context;
 		if(sensorManager.getSensorList(Sensor.TYPE_ACCELEROMETER).size()>0 && sensorManager.getSensorList(Sensor.TYPE_MAGNETIC_FIELD).size()>0){
 			accelerometer = sensorManager.getSensorList(Sensor.TYPE_ACCELEROMETER).get(0);
 			magneticField = sensorManager.getSensorList(Sensor.TYPE_MAGNETIC_FIELD).get(0);
@@ -66,19 +69,19 @@ public class AccelHelper {
 	}
 
 
-	
+
 	public float getShake(){
 		return lastMove;
 	}
 
 
-	
+
 	public void resetShake(){
 		lastMove=0;
 	}
 
 
-	
+
 	public void start() {
 		try {
 			if(accelerometer==null || magneticField==null)return;
@@ -90,7 +93,7 @@ public class AccelHelper {
 	}
 
 
-	
+
 	public void stop() {
 		try {
 			sensorManager.unregisterListener(sensorListener);
@@ -100,21 +103,28 @@ public class AccelHelper {
 	}
 
 
-	
-	private static int getDispRotation(Activity act) {
-		Display d = act.getWindowManager().getDefaultDisplay();
-		return DispRotateGetter.getInstance().getRotate(d);
+
+	private static int getDispRotation(Context context) {
+		WindowManager wm;
+		if (context instanceof Activity) {
+			Activity activity = (Activity) context;
+			wm = activity.getWindowManager();
+		} else {
+			wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+		}
+		Display display = wm.getDefaultDisplay();
+		return DispRotateGetter.getInstance().getRotate(display);
 	}
 
 
-	
+
 	public void setCurAccel( float a1 , float a2 , float a3 )
 	{
 		dst_acceleration_x = a1 ;
 		dst_acceleration_y = a2 ;
 		dst_acceleration_z = a3 ;
 
-		
+
 		float move =
 			fabs(dst_acceleration_x-last_dst_acceleration_x) +
 			fabs(dst_acceleration_y-last_dst_acceleration_y) +
@@ -127,7 +137,7 @@ public class AccelHelper {
 	}
 
 
-	
+
 	public void update(){
 		final float MAX_ACCEL_D = 0.04f ;
 		float dx = dst_acceleration_x - acceleration_x ;
@@ -152,7 +162,7 @@ public class AccelHelper {
 
 		lastTimeMSec = time ;
 
-		float scale = 0.2f * diff * 60 / (1000.0f) ;	
+		float scale = 0.2f * diff * 60 / (1000.0f) ;
 		final float MAX_SCALE_VALUE = 0.5f ;
 		if( scale > MAX_SCALE_VALUE ) scale = MAX_SCALE_VALUE ;
 
@@ -162,34 +172,34 @@ public class AccelHelper {
 	}
 
 
-	
+
 	private float fabs(float v){
 		return v > 0 ? v : -v ;
 	}
 
 
-	
+
 	public float getAccelX() {
 		return accel[0];
 	}
 
 
-	
+
 	public float getAccelY() {
 		return accel[1];
 	}
 
 
-	
+
 	public float getAccelZ() {
 		return accel[2];
 	}
 
 
-	
+
 	private static class DispRotateGetter {
 		private static IDispRotateGetter getInstance() {
-			
+
 			if (Build.VERSION.SDK_INT >= 8) {
 				// for 2.2 or higher
 				return new DispRotateGetterV8();
@@ -215,7 +225,7 @@ public class AccelHelper {
 	}
 
 
-	
+
 	private class MySensorListener implements SensorEventListener {
 		public void onAccuracyChanged(Sensor sensor, int i) {
 		}
@@ -239,14 +249,14 @@ public class AccelHelper {
 
 				SensorManager.getRotationMatrix(R, I,
 					accelerometerValues, geomagneticMatrix);
-				
-				int dr =getDispRotation(activity);
+
+				int dr =getDispRotation(context);
 				float x = 0;
 				float y = 0;
 				float z = 0;
 				if (dr == Surface.ROTATION_0) {
-					
-					
+
+
 					x = - accelerometerValues[0]/SensorManager.GRAVITY_EARTH ;
 					y = - accelerometerValues[1]/SensorManager.GRAVITY_EARTH ;
 					z = - accelerometerValues[2]/SensorManager.GRAVITY_EARTH ;
@@ -259,13 +269,13 @@ public class AccelHelper {
 					y =   accelerometerValues[1]/SensorManager.GRAVITY_EARTH ;
 					z = - accelerometerValues[2]/SensorManager.GRAVITY_EARTH ;
 				} else if (dr == Surface.ROTATION_270) {
-					
+
 					x = - accelerometerValues[1]/SensorManager.GRAVITY_EARTH ;
 					y =   accelerometerValues[0]/SensorManager.GRAVITY_EARTH ;
 					z = - accelerometerValues[2]/SensorManager.GRAVITY_EARTH ;
 				}
 
-				
+
 				setCurAccel(x, y, z);
 			}
 		}
