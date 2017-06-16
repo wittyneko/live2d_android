@@ -1,3 +1,11 @@
+//获取系统用户目录
+def getUserHome() {
+    String home = System.properties['user.home']
+    String path = "file://$home"
+    println("userHome: $path")
+    return home
+}
+
 ext{
 
     android = [
@@ -8,6 +16,13 @@ ext{
             versionCode  : 10000,
             versionName  : "1.0.0",
             supportVersion : "25.3.0",
+    ]
+
+    maven = [
+            local : ".maven/mylocal",
+            userHome : "${getUserHome()}",
+            localPath : "file://${getUserHome()}/.maven/mylocal",
+            localPathSnapshots : "file://${getUserHome()}/.maven/mylocal/snapshots",
     ]
 
     dependencies = [
