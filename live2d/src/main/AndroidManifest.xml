@@ -5,6 +5,18 @@
     <application android:allowBackup="true"
         android:supportsRtl="true">
 
+        <service android:name=".wallpaper.LiveWallpaperService"
+            android:label="Live2D Wallpaper"
+            android:permission="android.permission.BIND_WALLPAPER" >
+            <intent-filter>
+                <action android:name="android.service.wallpaper.WallpaperService" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.service.wallpaper"
+                android:resource="@xml/wallpaper" />
+        </service>
+
     </application>
 
 </manifest>
